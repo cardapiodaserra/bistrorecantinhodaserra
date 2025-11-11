@@ -14,6 +14,11 @@ function menuApp() {
             address: '',
             phone: ''
         },
+
+        // Estado para modal de detalhe do item
+        showItemModal: false,
+        activeItem: null,
+
         async init() {
             try {
                 this.isLoading = true;
@@ -85,6 +90,16 @@ function menuApp() {
             }
             // Salvar no localStorage
             localStorage.setItem('favorites', JSON.stringify(this.favorites));
+        },
+        // Abrir modal de detalhe do item
+        openItemModal(item, sectionTitle) {
+            // Clonar o item e anexar categoria para uso no modal
+            this.activeItem = Object.assign({}, item, { category: sectionTitle });
+            this.showItemModal = true;
+        },
+        closeItemModal() {
+            this.activeItem = null;
+            this.showItemModal = false;
         },
         isFavorite(itemName) {
             return this.favorites.includes(itemName);

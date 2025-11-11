@@ -1,0 +1,207 @@
+[
+  {
+    "id": "entradas",
+    "title": "Entradas",
+    "type": "food",
+    "items": [
+      { "name": "Bolinhos de bacalhau (2 unid. - molho tártaro)", "price": "R$ 24,90" },
+      { "name": "Pastel de queijo (2 unid.)", "price": "R$ 24,90" },
+      { "name": "Pastel de camarão (2 unid.)", "price": "R$ 25,60" },
+      { "name": "Pastel de carne de sol acebolada (2 unid.)", "price": "R$ 25,10" },
+      { "name": "Salada de frango (molho mostarda)", "price": "R$ 25,90" },
+      { "name": "Salada de camarão (molho caesar)", "price": "R$ 25,90" }
+    ]
+  },
+  {
+    "id": "prato-principal",
+    "title": "Prato Principal",
+    "type": "food",
+    "items": [
+      { "name": "Picanha ao molho de ervas (arroz com brócolis, batata frita, farofa de biscoito)", "price": "R$ 64,00" },
+      { "name": "Filé mignon (risoto de queijo, molho poivre, farofa de biscoito)", "price": "R$ 64,90" },
+      { "name": "Filé mignon (arroz piamontese, mix de folhas, molho de mostarda)", "price": "R$ 59,90" },
+      { "name": "Paillard de filé mignon (Fettuccine, molho de queijo)", "price": "R$ 41,90" },
+      { "name": "Filé à milanesa (purê de batata, arroz com cenoura)", "price": "R$ 39,90" },
+      { "name": "Parmegiana de carne (talharim na manteiga, com ervas, e molho de tomate e mussarela)", "price": "R$ 41,30" },
+      { "name": "Tilápia (purê, arroz de brócolis, molho de cebola roxa)", "price": "R$ 40,90" },
+      { "name": "Moqueca com camarão e peixe (arroz de coentro, farofa de dendê)", "price": "R$ 47,30" },
+      { "name": "Bobó de camarão (arroz branco, farofa de biscoito)", "price": "R$ 48,90" },
+      { "name": "Risoto de camarão (talharim na manteiga, com ervas, e molho de tomate e mussarela)", "price": "R$ 52,90" },
+      { "name": "Espaguete com camarão (molho de tomate confit)", "price": "R$ 44,30" },
+      { "name": "Peixe a milanesa (arroz piamontese, mix de folhas, molho de ervas)", "price": "R$ 47,30" },
+      { "name": "Peito de frango grelhado (arroz de brócolis, aipim frito ao molho de mostarda)", "price": "R$ 31,90" },
+      { "name": "Frango desfiado ao molho de queijo (arroz branco, batata palha)", "price": "R$ 29,90" },
+      { "name": "Frango crocante temperado com ervas (arroz de cenoura, mix de folhas)", "price": "R$ 30,70" }
+    ]
+  },
+  {
+    "id": "massas",
+    "title": "Massas",
+    "type": "food",
+    "items": [
+      { "name": "Ravioli de queijo com ervas e molho de tomate", "price": "[Preço Vazio]" },
+      { "name": "Ravioli de ragu com linguiça e carne com molho de tomate", "price": "[Preço Vazio]" },
+      { "name": "Fettuccine ao ragu de linguiça e carne com molho de tomate", "price": "[Preço Vazio]" },
+      { "name": "Nhoque de batata com ragu de linguiça e carne com molho de tomate", "price": "R$ 48,00" }
+    ]
+  },
+  {
+    "id": "prato-crianca",
+    "title": "Prato de Criança",
+    "type": "food",
+    "items": [
+      { "name": "Carne ou frango (arroz branco, batata frita e feijão)", "price": "R$ 22,00" }
+    ]
+  },
+  {
+    "id": "guarnicao",
+    "title": "Guarnição",
+    "type": "food",
+    "items": [
+      { "name": "Rubacão com feijão branco", "price": "R$ 16,00" },
+      { "name": "Batata frita", "price": "R$ 15,00" },
+      { "name": "Arroz branco", "price": "R$ 8,00" },
+      { "name": "Arroz com brócolis", "price": "R$ 12,00" },
+      { "name": "Feijão", "price": "R$ 5,00" },
+      { "name": "Farofa de ovos", "price": "R$ 10,00" }
+    ]
+  },
+  {
+    "id": "sobremesa",
+    "title": "Sobremesa",
+    "type": "food",
+    "items": [
+      { "name": "Delícia de banana (sorvete, calda de caramelo)", "price": "R$ 14,00" },
+      { "name": "Brownie (sorvete, calda de chocolate)", "price": "R$ 14,00" },
+      { "name": "Torta de Romeu e Julieta", "price": "R$ 14,00" },
+      { "name": "Pudim de leite", "price": "R$ 8,00" }
+    ]
+  },
+  {
+    "id": "cafe",
+    "title": "Café",
+    "type": "drinks",
+    "items": [
+      { "name": "Café expresso", "price": "R$ 4,00" },
+      { "name": "Capuccino", "price": "R$ 6,00" }
+    ]
+  },
+  {
+    "id": "drink",
+    "title": "Drink",
+    "type": "drinks",
+    "items": [
+      { "name": "Drink tardinha<span class=\"item-description\">(Gengibre, limão, polpa de maracujá, xarope de açúcar, gelo, cachaça)</span>", "price": "R$ 22,00" },
+      { "name": "Aperol ice<span class=\"item-description\">(Gelo, laranja, aperol, lecce)</span>", "price": "R$ 23,00" },
+      { "name": "Espaguete<span class=\"item-description\">(Aperol, gelo, limão, cerveja)</span>", "price": "R$ 25,90" },
+      { "name": "Aperol tônica<span class=\"item-description\">(Gelo, maracujá, aperol, água tônica)</span>", "price": "R$ 24,00" },
+      { "name": "Campari isotônico<span class=\"item-description\">(Gelo, campari, gatorade de laranja)</span>", "price": "R$ 23,50" },
+      { "name": "Campari ice<span class=\"item-description\">(Gelo, limão, campari e ice)</span>", "price": "R$ 24,90" },
+      { "name": "Cubra libre<span class=\"item-description\">(Rum, limão e Coca-Cola)</span>", "price": "R$ 23,00" }
+    ]
+  },
+  {
+    "id": "coquetel",
+    "title": "Coquetel",
+    "type": "drinks",
+    "items": [
+      { "name": "Caipirinha<span class=\"item-description\">(Cachaça, limão, xarope de açúcar e gelo)</span>", "price": "R$ 16,00" },
+      { "name": "Caipivodka<span class=\"item-description\">(Vodka, limão, xarope de açúcar e gelo)</span>", "price": "R$ 24,00" },
+      { "name": "Pina colada<span class=\"item-description\">(Abacaxi, leite de coco, leite condensado, gelo e vodka)</span>", "price": "R$ 24,00" }
+    ]
+  },
+  {
+    "id": "vinho-branco",
+    "title": "Vinho Branco",
+    "type": "drinks",
+    "items": [
+      { "name": "Rose Roncher toro reservado suave - Chileno", "price": "R$ 74,00" },
+      { "name": "Frisanto Sprinter - Chileno<span class=\"item-description\">(Branco doce)</span>", "price": "R$ 87,00" }
+    ]
+  },
+  {
+    "id": "vinho-tinto",
+    "title": "Vinho Tinto",
+    "type": "drinks",
+    "items": [
+      { "name": "Explorador - Chileno<span class=\"item-description\">(Merlot, tinto seco)</span>", "price": "R$ 99,00" },
+      { "name": "Cosecha - Chileno<span class=\"item-description\">(Tarapaca, cabernet, meio seco)</span>", "price": "R$ 93,00" },
+      { "name": "Chilano - Chileno<span class=\"item-description\">(Carmenere, tinto seco)</span>", "price": "R$ 90,00" },
+      { "name": "G7 - Chileno<span class=\"item-description\">(Carmenère, Tinto seco)</span>", "price": "R$ 74,00" },
+      { "name": "G7 - Cabernere Sauvignon - Chileno<span class=\"item-description\">(Tinto seco)</span>", "price": "R$ 74,00" },
+      { "name": "Di Mallo - Uruguai<span class=\"item-description\">(Tinto seco)</span>", "price": "R$ 102,00" },
+      { "name": "Toro Cabernet Sauvignon - Argentino<span class=\"item-description\">(Centenário meio seco)</span>", "price": "R$ 89,00" }
+    ]
+  },
+  {
+    "id": "cerveja-lata",
+    "title": "Cerveja - Lata",
+    "type": "drinks",
+    "items": [
+      { "name": "Budweiser", "price": "R$ 9,20" },
+      { "name": "Amstel", "price": "R$ 9,50" },
+      { "name": "Puro Malte", "price": "R$ 8,00" }
+    ]
+  },
+  {
+    "id": "espumante",
+    "title": "Espumante",
+    "type": "drinks",
+    "items": [
+      { "name": "Salton", "price": "R$ 49,00" },
+      { "name": "Brasil", "price": "[Preço Vazio]" },
+      { "name": "Chondon Brut", "price": "[Preço Vazio]" },
+      { "name": "Serra Gaúcha", "price": "[Preço Vazio]" }
+    ]
+  },
+  {
+    "id": "destilada",
+    "title": "Destilada",
+    "type": "drinks",
+    "items": [
+      { "name": "Gin", "price": "[Preço Vazio]" },
+      { "name": "Tequila", "price": "R$ 24,00" }
+    ]
+  },
+  {
+    "id": "licor",
+    "title": "Licor",
+    "type": "drinks",
+    "items": [
+      { "name": "Marula", "price": "[Preço Vazio]" },
+      { "name": "Amaretto", "price": "[Preço Vazio]" }
+    ]
+  },
+  {
+    "id": "suco",
+    "title": "Suco",
+    "type": "drinks",
+    "items": [
+      { "name": "Laranja", "price": "R$ 6,10" },
+      { "name": "Limonada", "price": "R$ 4,90" },
+      { "name": "Suco da fruta (Temporada)", "price": "[Preço Vazio]" }
+    ]
+  },
+  {
+    "id": "whisky",
+    "title": "Whisky",
+    "type": "drinks",
+    "items": [
+      { "name": "Black Label", "price": "[Preço Vazio]" },
+      { "name": "Write Horse", "price": "[Preço Vazio]" },
+      { "name": "Jack Daniels", "price": "[Preço Vazio]" },
+      { "name": "Ballantines", "price": "[Preço Vazio]" },
+      { "name": "Red Label", "price": "[Preço Vazio]" }
+    ]
+  },
+  {
+    "id": "vodka",
+    "title": "Vodka",
+    "type": "drinks",
+    "items": [
+      { "name": "Sminorff", "price": "[Preço Vazio]" },
+      { "name": "Absolut", "price": "R$ 10,00" },
+      { "name": "Dallof", "price": "[Preço Vazio]" }
+    ]
+  }
+]

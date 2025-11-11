@@ -1,0 +1,183 @@
+body {
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    background-color: #F5F0E8;
+}
+
+/* Animações para Loading Screen */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes logoFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes cartPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 20px 25px -5px rgba(107, 44, 44, 0.3), 0 10px 10px -5px rgba(107, 44, 44, 0.2);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 25px 30px -5px rgba(107, 44, 44, 0.4), 0 15px 15px -5px rgba(107, 44, 44, 0.3);
+    }
+}
+
+@keyframes bounceSubtle {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-cart-pulse {
+    animation: cartPulse 2s ease-in-out infinite;
+}
+
+.animate-bounce-subtle {
+    animation: bounceSubtle 1s ease-in-out infinite;
+}
+
+.animate-logo-float {
+    animation: logoFloat 2s ease-in-out infinite;
+}
+
+/* Esconder scrollbar horizontal */
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* Limitar linhas de texto */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Animações suaves */
+* {
+    transition: all 0.2s ease-in-out;
+}
+
+button {
+    transition: all 0.2s ease-in-out;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+/* Efeitos de hover nos cards */
+.hover\:shadow-md:hover {
+    box-shadow: 0 4px 6px -1px rgba(107, 44, 44, 0.1), 0 2px 4px -1px rgba(107, 44, 44, 0.06);
+}
+
+/* Estilo para inputs de busca */
+input[type="text"]:focus {
+    box-shadow: 0 0 0 3px rgba(139, 58, 58, 0.1);
+}
+
+/* Cores personalizadas adicionais */
+.bg-brand-primary {
+    background-color: #8B3A3A;
+}
+
+.text-brand-primary {
+    color: #8B3A3A;
+}
+
+.border-brand-wood {
+    border-color: #8B6239;
+}
+
+.bg-brand-cream {
+    background-color: #E8DCC8;
+}
+
+.bg-brand-maroon {
+    background-color: #6B2C2C;
+}
+
+/* Status badge */
+.status-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #48BB78;
+    color: white;
+    font-size: 0.625rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    text-transform: uppercase;
+}
+
+/* Responsividade */
+@media (max-width: 640px) {
+    .container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+/* Desktop enhancements */
+@media (min-width: 1024px) {
+    /* Smooth scroll para navegação */
+    html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 140px;
+    }
+    
+    /* Estilo da sidebar sticky */
+    aside {
+        position: sticky;
+        top: 140px;
+        max-height: calc(100vh - 160px);
+        overflow-y: auto;
+    }
+    
+    /* Scrollbar customizada para sidebar */
+    aside::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    aside::-webkit-scrollbar-track {
+        background: #F5F0E8;
+        border-radius: 10px;
+    }
+    
+    aside::-webkit-scrollbar-thumb {
+        background: #8B6239;
+        border-radius: 10px;
+    }
+    
+    aside::-webkit-scrollbar-thumb:hover {
+        background: #6B2C2C;
+    }
+}

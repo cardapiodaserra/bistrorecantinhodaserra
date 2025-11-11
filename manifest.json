@@ -2,8 +2,8 @@
   "name": "Bistrô Recantinho da Serra",
   "short_name": "Recantinho",
   "description": "Cardápio digital do Bistrô Recantinho da Serra - Dona Inês, PB",
-  "start_url": "/index.html",
-  "scope": "/",
+  "start_url": "/bistrorecantinhodaserra/index.html",
+  "scope": "/bistrorecantinhodaserra/",
   "display": "standalone",
   "background_color": "#F5F0E8",
   "theme_color": "#8B3A3A",
@@ -35,7 +35,7 @@
       "name": "Ver Cardápio",
       "short_name": "Cardápio",
       "description": "Acesse o cardápio completo",
-      "url": "/index.html"
+      "url": "/bistrorecantinhodaserra/index.html"
     }
   ]
 }

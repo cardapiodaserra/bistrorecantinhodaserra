@@ -593,7 +593,7 @@
                     <div x-show="isUserIdentified" class="mb-3 p-3 bg-brand-beige rounded-lg">
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
-                                <p class="text-xs text-gray-600 mb-1">Entregar para:</p>
+                                <p class="text-xs text-gray-600 mb-1">Pedido para:</p>
                                 <p class="font-semibold text-sm text-brand-dark" x-text="user.name"></p>
                                 <p class="text-xs text-gray-600" x-text="user.address"></p>
                                 <p class="text-xs text-gray-600" x-show="user.phone" x-text="user.phone"></p>
@@ -631,7 +631,7 @@
             x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
             class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
-            @click.self="showUserForm = false" style="display: none;">
+            @click.self="showUserForm = false; showCart = true" style="display: none;">
             <div x-show="showUserForm" x-transition:enter="transition ease-out duration-300"
                 x-transition:enter-start="scale-95 opacity-0" x-transition:enter-end="scale-100 opacity-100"
                 x-transition:leave="transition ease-in duration-200" x-transition:leave-start="scale-100 opacity-100"
@@ -639,8 +639,8 @@
                 class="bg-white rounded-2xl w-full max-w-md overflow-hidden">
                 <!-- Header do Form -->
                 <div class="p-4 border-b border-gray-200 flex items-center justify-between bg-brand-primary text-white">
-                    <h2 class="text-xl font-bold">Seus Dados</h2>
-                    <button @click="showUserForm = false"
+                    <h2 class="text-xl font-bold">Confirme seus Dados</h2>
+                    <button @click="showUserForm = false; showCart = true"
                         class="p-2 hover:bg-brand-maroon rounded-full transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -651,6 +651,13 @@
 
                 <!-- Formulário -->
                 <form @submit.prevent="submitUserForm()" class="p-6 space-y-4">
+                    <!-- Alerta informativo -->
+                    <div class="bg-brand-cream border-l-4 border-brand-primary p-3 rounded">
+                        <p class="text-xs text-brand-dark">
+                            <strong>💡 Dica:</strong> Atualize o local a cada pedido (ex: Mesa 5, Mesa 10, delivery, etc.)
+                        </p>
+                    </div>
+
                     <div>
                         <label class="block text-sm font-semibold text-brand-dark mb-2">
                             Nome Completo <span class="text-red-500">*</span>
@@ -661,10 +668,11 @@
 
                     <div>
                         <label class="block text-sm font-semibold text-brand-dark mb-2">
-                            Endereço Completo <span class="text-red-500">*</span>
+                            Local de Entrega <span class="text-red-500">*</span>
                         </label>
-                        <textarea x-model="user.address" required rows="3" placeholder="Rua, número, bairro, cidade"
+                        <textarea x-model="user.address" required rows="3" placeholder="Ex: Mesa 5 / Rua Principal, 123"
                             class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors resize-none"></textarea>
+                        <p class="text-xs text-gray-500 mt-1">Atualize sempre que mudar de mesa ou local</p>
                     </div>
 
                     <div>
@@ -678,12 +686,12 @@
                     <div class="pt-4">
                         <button type="submit"
                             class="w-full py-3 bg-brand-primary text-white font-bold rounded-lg hover:bg-brand-maroon transition-colors">
-                            Continuar com o Pedido
+                            Enviar Pedido
                         </button>
                     </div>
 
                     <p class="text-xs text-gray-500 text-center">
-                        Seus dados serão salvos para facilitar próximos pedidos
+                        Seus dados são salvos localmente para facilitar próximos pedidos
                     </p>
                 </form>
             </div>

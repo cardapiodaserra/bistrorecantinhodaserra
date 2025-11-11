@@ -44,7 +44,7 @@ function menuApp() {
                 
             } catch (error) {
                 console.error('Erro ao carregar dados:', error);
-                alert('Erro ao carregar o cardápio. Por favor, recarregue a página.');
+                // Erro será exibido no console - usuário pode tentar recarregar a página
             } finally {
                 this.isLoading = false;
             }
@@ -160,20 +160,17 @@ function menuApp() {
             localStorage.setItem('user', JSON.stringify(this.user));
         },
         finalizarPedido() {
-            if (!this.isUserIdentified) {
-                this.showUserForm = true;
-            } else {
-                this.enviarPedido();
-            }
+            // Sempre abre o modal para confirmar/atualizar o local (mesa ou endereço)
+            this.showCart = false;
+            this.showUserForm = true;
         },
         submitUserForm() {
             if (this.user.name && this.user.address) {
                 this.saveUser();
                 this.showUserForm = false;
                 this.enviarPedido();
-            } else {
-                alert('Por favor, preencha todos os campos obrigatórios.');
             }
+            // Se os campos não estiverem preenchidos, o HTML já valida com 'required'
         },
         enviarPedido() {
             const mensagem = this.gerarMensagemPedido();
@@ -195,14 +192,11 @@ function menuApp() {
             this.cart = [];
             this.saveCart();
             this.showCart = false;
-            
-            // Mensagem de confirmação
-            alert('Seu pedido será enviado pelo WhatsApp. Por favor, confirme o envio no aplicativo que acabou de abrir.');
         },
         gerarMensagemPedido() {
             let msg = `*PEDIDO - Bistrô Recantinho da Serra*\n\n`;
             msg += `*Cliente:* ${this.user.name}\n`;
-            msg += `*Endereço:* ${this.user.address}\n`;
+            msg += `*Local:* ${this.user.address}\n`;
             if (this.user.phone) {
                 msg += `*Telefone:* ${this.user.phone}\n`;
             }

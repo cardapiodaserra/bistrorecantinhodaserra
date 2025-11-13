@@ -4,7 +4,7 @@
     "title": "Entradas",
     "type": "food",
     "items": [
-      { "name": "Bolinhos de bacalhau (2 unid. - molho tártaro)", "price": "R$ 24,90" },
+      { "name": "Bolinhos de bacalhau (2 unid. - molho tártaro)", "price": "R$ 24,90", "image": "assets/img/Bolinho de bacalhau.jpeg" },
       { "name": "Pastel de queijo (2 unid.)", "price": "R$ 24,90" },
       { "name": "Pastel de camarão (2 unid.)", "price": "R$ 25,60" },
       { "name": "Pastel de carne de sol acebolada (2 unid.)", "price": "R$ 25,10" },
@@ -17,9 +17,9 @@
     "title": "Prato Principal",
     "type": "food",
     "items": [
-      { "name": "Picanha ao molho de ervas (arroz com brócolis, batata frita, farofa de biscoito)", "price": "R$ 64,00" },
+      { "name": "Picanha ao molho de ervas (arroz com brócolis, batata frita, farofa de biscoito)", "price": "R$ 64,00", "image": "assets/img/Picanha molho de ervas.jpeg" },
       { "name": "Filé mignon (risoto de queijo, molho poivre, farofa de biscoito)", "price": "R$ 64,90" },
-      { "name": "Filé mignon (arroz piamontese, mix de folhas, molho de mostarda)", "price": "R$ 59,90" },
+      { "name": "Filé mignon (arroz piamontese, mix de folhas, molho de mostarda)", "price": "R$ 59,90", "image": "assets/img/Fl com molho de mostarda.jpeg" },
       { "name": "Paillard de filé mignon (Fettuccine, molho de queijo)", "price": "R$ 41,90", "image": "assets/img/Paillard.jpeg" },
       { "name": "Filé à milanesa (purê de batata, arroz com cenoura)", "price": "R$ 39,90", "image": "assets/img/Filé à milanesa.jpeg" },
       { "name": "Parmegiana de carne (talharim na manteiga, com ervas, e molho de tomate e mussarela)", "price": "R$ 41,30", "image": "assets/img/Parmegiana.jpeg" },

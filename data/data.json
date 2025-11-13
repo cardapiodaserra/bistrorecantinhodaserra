@@ -170,7 +170,7 @@
     "type": "drinks",
     "items": [
       { "name": "Marula", "price": "R$ 11,00" },
-      { "name": "Amaretto", "price": "[Preço Vazio]" }
+      { "name": "Amaretto", "price": "R$ 11,20" }
     ]
   },
   {

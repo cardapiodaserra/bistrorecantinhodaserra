@@ -92,6 +92,7 @@
     "type": "drinks",
     "items": [
       { "name": "Drink tardinha<span class=\"item-description\">(Gengibre, limão, polpa de maracujá, xarope de açúcar, gelo, cachaça)</span>", "price": "R$ 22,00" },
+      { "name": "Drink Espanhola<span class=\"item-description\">(Cachaça envelhecida, suco de laranja, licor de laranja, toque de gengibre e raspas de limão)</span>", "price": "R$ 23,00" },
       { "name": "Aperol ice<span class=\"item-description\">(Gelo, laranja, aperol, lecce)</span>", "price": "R$ 23,00" },
       { "name": "Espaguete<span class=\"item-description\">(Aperol, gelo, limão, cerveja)</span>", "price": "R$ 25,90" },
       { "name": "Aperol tônica<span class=\"item-description\">(Gelo, maracujá, aperol, água tônica)</span>", "price": "R$ 24,00", "image": "assets/img/Aperol água tônica.jpeg" },

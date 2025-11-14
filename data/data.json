@@ -126,10 +126,10 @@
     "type": "drinks",
     "items": [
       { "name": "Explorador - Chileno<span class=\"item-description\">(Merlot, tinto seco)</span>", "price": "R$ 99,00" },
-      { "name": "Cosecha - Chileno<span class=\"item-description\">(Tarapaca, cabernet, meio seco)</span>", "price": "R$ 93,00" },
+      { "name": "Cosecha - Chileno<span class=\"item-description\">(Tarapaca, cabernet, meio seco)</span>", "price": "R$ 95,00" },
       { "name": "Chilano - Chileno<span class=\"item-description\">(Carmenere, tinto seco)</span>", "price": "R$ 90,00" },
-      { "name": "G7 - Chileno<span class=\"item-description\">(Carmenère, Tinto seco)</span>", "price": "R$ 74,00" },
-      { "name": "G7 - Cabernere Sauvignon - Chileno<span class=\"item-description\">(Tinto seco)</span>", "price": "R$ 74,00" },
+      { "name": "G7 - Chileno<span class=\"item-description\">(Carmenère, Tinto seco)</span>", "price": "R$ 71,00" },
+      { "name": "G7 - Cabernere Sauvignon - Chileno<span class=\"item-description\">(Tinto seco)</span>", "price": "R$ 71,00" },
       { "name": "Di Mallo - Uruguai<span class=\"item-description\">(Tinto seco)</span>", "price": "R$ 102,00" },
       { "name": "Toro Cabernet Sauvignon - Argentino<span class=\"item-description\">(Centenário meio seco)</span>", "price": "R$ 89,00" }
     ]
@@ -201,7 +201,7 @@
     "type": "drinks",
     "items": [
       { "name": "Sminorff", "price": "R$ 10,00" },
-      { "name": "Absolut", "price": "R$ 10,00" },
+      { "name": "Absolut", "price": "R$ 11,00" },
       { "name": "Dallof", "price": "R$ 10,00" }
     ]
   }

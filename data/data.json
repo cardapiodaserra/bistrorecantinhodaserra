@@ -4,7 +4,7 @@
     "title": "Entradas",
     "type": "food",
     "items": [
-      { "name": "Bolinhos de bacalhau (8 unid. - molho tártaro)", "price": "R$ 24,90", "image": "assets/img/Bolinho de bacalhau.jpeg" },
+      { "name": "Bolinhos de bacalhau (8 unid. - molho tártaro)", "price": "R$ 31,90", "image": "assets/img/Bolinho de bacalhau.jpeg" },
       { "name": "Pastel de queijo (8 unid.)", "price": "R$ 24,90" },
       { "name": "Pastel de camarão (8 unid.)", "price": "R$ 25,60" },
       { "name": "Pastel de carne de sol acebolada (8 unid.)", "price": "R$ 25,10" },

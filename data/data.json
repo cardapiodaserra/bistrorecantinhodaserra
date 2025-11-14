@@ -149,9 +149,9 @@
     "title": "Espumante",
     "type": "drinks",
     "items": [
-      { "name": "Salton", "price": "R$ 49,00" },
+      { "name": "Salton", "price": "R$ 49,00", "image": "assets/img/Espumante Salton.jpeg" },
       { "name": "Brasil", "price": "[Preço Vazio]" },
-      { "name": "Chondon Brut", "price": "R$ 145,00" },
+      { "name": "Chandon Brut", "price": "R$ 145,00", "image": "assets/img/Espumante Chandon.jpeg" },
       { "name": "Serra Gaúcha", "price": "[Preço Vazio]" }
     ]
   },

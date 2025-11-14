@@ -9,7 +9,7 @@
       { "name": "Pastel de camarão (8 unid.)", "price": "R$ 25,60" },
       { "name": "Pastel de carne de sol acebolada (8 unid.)", "price": "R$ 25,10" },
       { "name": "Salada de frango (molho mostarda)", "price": "R$ 25,90" },
-      { "name": "Salada de camarão (molho caesar)", "price": "R$ 25,90" }
+      { "name": "Salada de camarão (molho caesar)", "price": "R$ 28,90" }
     ]
   },
   {
@@ -22,7 +22,7 @@
       { "name": "Filé mignon (arroz piamontese, mix de folhas, molho de mostarda)", "price": "R$ 59,90", "image": "assets/img/Fl com molho de mostarda.jpeg" },
       { "name": "Paillard de filé mignon (Fettuccine, molho de queijo)", "price": "R$ 41,90", "image": "assets/img/Paillard.jpeg" },
       { "name": "Filé à milanesa (purê de batata, arroz com cenoura)", "price": "R$ 39,90", "image": "assets/img/Filé à milanesa.jpeg" },
-      { "name": "Parmegiana de carne (talharim na manteiga, com ervas, e molho de tomate e mussarela)", "price": "R$ 41,30", "image": "assets/img/Parmegiana.jpeg" },
+      { "name": "Parmegiana de carne (talharim na manteiga, com ervas, e molho de tomate e mussarela)", "price": "R$ 41,70", "image": "assets/img/Parmegiana.jpeg" },
       { "name": "Tilápia (purê, arroz de brócolis, molho de cebola roxa)", "price": "R$ 40,90", "image": "assets/img/Peixe ao molho de cebola roxa.jpeg" },
       { "name": "Moqueca com camarão e peixe (arroz de coentro, farofa de dendê)", "price": "R$ 47,30", "image": "assets/img/Muqueca de peixe com camarão.jpeg" },
       { "name": "Bobó de camarão (arroz branco, farofa de biscoito)", "price": "R$ 48,90" },
@@ -107,7 +107,7 @@
     "type": "drinks",
     "items": [
       { "name": "Caipirinha<span class=\"item-description\">(Cachaça, limão, xarope de açúcar e gelo)</span>", "price": "R$ 16,00", "image": "assets/img/Caipirinha.jpeg" },
-      { "name": "Caipivodka<span class=\"item-description\">(Vodka, limão, xarope de açúcar e gelo)</span>", "price": "R$ 24,00", "image": "assets/img/Capi vodkade maracujá.jpeg" },
+      { "name": "Caipivodka<span class=\"item-description\">(Vodka, limão, xarope de açúcar e gelo)</span>", "price": "R$ 21,00", "image": "assets/img/Capi vodkade maracujá.jpeg" },
       { "name": "Pina colada<span class=\"item-description\">(Abacaxi, leite de coco, leite condensado, gelo e vodka)</span>", "price": "R$ 24,00", "image": "assets/img/Pina colanda.jpeg" }
     ]
   },

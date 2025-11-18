@@ -218,6 +218,32 @@
     ]
   },
   {
+    "id": "refrigerante",
+    "title": "Refrigerante",
+    "type": "drinks",
+    "items": [
+      { "name": "Coca-Cola lata 350ml", "price": "R$ 5,80" },
+      { "name": "Coca-Cola Zero lata 350ml", "price": "R$ 5,80" },
+      { "name": "Guaraná Antártica lata 350ml", "price": "R$ 5,10" },
+      { "name": "Fanta laranja lata 350ml", "price": "R$ 5,20" },
+      { "name": "Fanta uva lata 350ml", "price": "R$ 5,20" },
+      { "name": "Pepsi lata 350ml", "price": "R$ 5,10" },
+      { "name": "H2O Limonete 500ml", "price": "R$ 8,00" },
+      { "name": "Red Bull 250ml", "price": "R$ 12,00" },
+      { "name": "Água tônica 350ml", "price": "R$ 5,50" },
+      { "name": "Água mineral com gás 500ml", "price": "R$ 3,00" }
+    ]
+  },
+  {
+    "id": "bebida-mista",
+    "title": "Bebida Mista",
+    "type": "drinks",
+    "items": [
+      { "name": "Cítrus 330ml", "price": "R$ 5,00" },
+      { "name": "Gatorade 500ml", "price": "R$ 12,00" }
+    ]
+  },
+  {
     "id": "suco",
     "title": "Suco",
     "type": "drinks",

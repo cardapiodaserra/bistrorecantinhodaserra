@@ -8,8 +8,8 @@ const urlsToCache = [
   `${BASE_PATH}/js/app.js`,
   `${BASE_PATH}/data/data.json`,
   `${BASE_PATH}/assets/logo.PNG`,
+  `${BASE_PATH}/css/tailwind/output.css`,
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
-  'https://cdn.tailwindcss.com',
   'https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js'
 ];
 

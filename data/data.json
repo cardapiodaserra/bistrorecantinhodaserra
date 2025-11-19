@@ -40,9 +40,9 @@
     "type": "food",
     "items": [
       { "name": "Ravioli de queijo com ervas e molho de tomate", "price": "R$ 31,80" },
-      { "name": "Ravioli de ragu com linguiça e carne com molho de tomate", "price": "R$ 32,60" },
+      { "name": "Ravioli de ragu com linguiça e carne com molho de tomate", "price": "R$ 32,60", "image": "assets/img/Ravioli de ragu.jpeg" },
       { "name": "Fettuccine ao ragu de linguiça e carne com molho de tomate", "price": "R$ 30,30" },
-      { "name": "Nhoque de batata", "price": "R$ 28,90" }
+      { "name": "Nhoque de batata com ragu de com molho de tomate", "price": "R$ 28,90" }
     ]
   },
   {
@@ -184,7 +184,7 @@
     "type": "drinks",
     "items": [
       { "name": "Budweiser", "price": "R$ 9,20" },
-      { "name": "Amstel", "price": "R$ 9,50" },
+      { "name": "Amstel", "price": "R$ 8,50" },
       { "name": "Puro Malte", "price": "R$ 8,00" }
     ]
   },

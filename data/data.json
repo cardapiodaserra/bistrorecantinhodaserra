@@ -73,7 +73,7 @@
     "items": [
       { "name": "Delícia de banana (sorvete, calda de caramelo)", "price": "R$ 9,00" },
       { "name": "Brownie (sorvete, calda de chocolate)", "price": "R$ 11,00", "image": "assets/img/Brownie.jpeg" },
-      { "name": "Cheesecake", "price": "R$ 9,00" },
+      { "name": "Cheesecake", "price": "R$ 9,00", "image": "assets/img/Cheesecake.jpeg" },
       { "name": "Pudim de leite", "price": "R$ 8,00", "image": "assets/img/Pudim.jpeg" }
     ]
   },

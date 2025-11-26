@@ -26,7 +26,7 @@
       { "name": "Tilápia (purê, arroz de brócolis, molho de cebola roxa)", "price": "R$ 42,90", "image": "assets/img/Peixe ao molho de cebola roxa.jpeg" },
       { "name": "Moqueca com camarão e peixe (arroz de coentro, farofa de dendê)", "price": "R$ 47,80", "image": "assets/img/Muqueca de peixe com camarão.jpeg" },
       { "name": "Bobó de camarão (arroz branco, farofa de biscoito)", "price": "R$ 44,90", "image": "assets/img/Bobó de camarão.jpeg" },
-      { "name": "Risoto de camarão (molho bisque de de camarão e queijo)", "price": "R$ 52,90" },
+      { "name": "Risoto de camarão (molho bisque de de camarão e queijo)", "price": "R$ 52,90", "image": "assets/img/Risoto de camarão.jpeg" },
       { "name": "Espaguete com camarão (molho de tomate confit)", "price": "R$ 44,30", "image": "assets/img/Espaguete de camarão massa fresca.jpeg" },
       { "name": "Peixe a milanesa (arroz piamontese, mix de folhas, molho de ervas)", "price": "R$ 47,30" },
       { "name": "Peito de frango grelhado (arroz de brócolis, aipim frito ao molho de mostarda)", "price": "R$ 31,90" },

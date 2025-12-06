@@ -41,7 +41,7 @@
     "items": [
       { "name": "Ravioli de queijo com ervas e molho de tomate", "price": "R$ 31,80" },
       { "name": "Ravioli de ragu com linguiça e carne com molho de tomate", "price": "R$ 32,60", "image": "assets/img/Ravioli de ragu.jpeg" },
-      { "name": "Fettuccine ao ragu de linguiça e carne com molho de tomate", "price": "R$ 30,30" },
+      { "name": "Fettuccine ao ragu de linguiça e carne com molho de tomate", "price": "R$ 30,30", "image": "assets/img/Fettuccine com ragu.jpeg" },
       { "name": "Nhoque de batata com ragu de com molho de tomate", "price": "R$ 28,90" }
     ]
   },

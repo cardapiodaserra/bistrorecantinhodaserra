@@ -55,8 +55,14 @@ function menuApp() {
             }
         },
         get filteredSections() {
-            let filtered = this.sections.filter(section => {
-                // Filtro por tipo (food/drinks/all)
+            // Primeiro, filtrar apenas itens disponíveis
+            let filtered = this.sections.map(section => ({
+                ...section,
+                items: section.items.filter(item => item.available !== false)
+            })).filter(section => section.items.length > 0);
+
+            // Filtro por tipo (food/drinks/all)
+            filtered = filtered.filter(section => {
                 if (this.activeFilter !== 'all' && section.type !== this.activeFilter) return false;
                 
                 // Filtro de favoritos

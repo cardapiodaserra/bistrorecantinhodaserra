@@ -4,12 +4,37 @@
     "title": "Entradas",
     "type": "food",
     "items": [
-      { "name": "Bolinhos de bacalhau (8 unid. - molho tártaro)", "price": "R$ 31,90", "image": "assets/img/Bolinho de bacalhau.jpeg" },
-      { "name": "Pastel de queijo (8 unid.)", "price": "R$ 24,90" },
-      { "name": "Pastel de camarão (8 unid.)", "price": "R$ 25,60" },
-      { "name": "Pastel de carne de sol acebolada (8 unid.)", "price": "R$ 25,10" },
-      { "name": "Salada de frango (molho mostarda)", "price": "R$ 25,90" },
-      { "name": "Salada de camarão (molho caesar)", "price": "R$ 28,90" }
+      {
+        "name": "Bolinhos de bacalhau (8 unid. - molho tártaro)",
+        "price": "R$ 31,90",
+        "image": "assets/img/Bolinho de bacalhau.jpeg",
+        "available": true
+      },
+      {
+        "name": "Pastel de queijo (8 unid.)",
+        "price": "R$ 24,90",
+        "available": true
+      },
+      {
+        "name": "Pastel de camarão (8 unid.)",
+        "price": "R$ 25,60",
+        "available": true
+      },
+      {
+        "name": "Pastel de carne de sol acebolada (8 unid.)",
+        "price": "R$ 25,10",
+        "available": true
+      },
+      {
+        "name": "Salada de frango (molho mostarda)",
+        "price": "R$ 25,90",
+        "available": true
+      },
+      {
+        "name": "Salada de camarão (molho caesar)",
+        "price": "R$ 28,90",
+        "available": true
+      }
     ]
   },
   {
@@ -17,21 +42,93 @@
     "title": "Prato Principal",
     "type": "food",
     "items": [
-      { "name": "Picanha ao molho de ervas (arroz com brócolis, batata frita, farofa de biscoito)", "price": "R$ 62,00", "image": "assets/img/Picanha molho de ervas.jpeg" },
-      { "name": "Filé mignon (risoto de queijo, molho poivre, farofa de biscoito)", "price": "R$ 64,90", "image": "assets/img/Filé mignon com risoto de queijo.jpeg" },
-      { "name": "Filé mignon (arroz piamontese, aipim frito e molho de mostarda)", "price": "R$ 42,90", "image": "assets/img/Fl com molho de mostarda.jpeg" },
-      { "name": "Paillard de filé mignon (Fettuccine, molho de queijo)", "price": "R$ 41,90", "image": "assets/img/Paillard.jpeg" },
-      { "name": "Filé à milanesa (purê de batata, arroz com cenoura)", "price": "R$ 39,90", "image": "assets/img/Filé à milanesa.jpeg" },
-      { "name": "Parmegiana de carne (talharim na manteiga, com ervas, e molho de tomate e mussarela)", "price": "R$ 41,70", "image": "assets/img/Parmegiana.jpeg" },
-      { "name": "Tilápia (purê, arroz de brócolis, molho de cebola roxa)", "price": "R$ 42,90", "image": "assets/img/Peixe ao molho de cebola roxa.jpeg" },
-      { "name": "Moqueca com camarão e peixe (arroz de coentro, farofa de dendê)", "price": "R$ 47,80", "image": "assets/img/Muqueca de peixe com camarão.jpeg" },
-      { "name": "Bobó de camarão (arroz branco, farofa de biscoito)", "price": "R$ 44,90", "image": "assets/img/Bobó de camarão.jpeg" },
-      { "name": "Risoto de camarão (molho bisque de de camarão e queijo)", "price": "R$ 52,90", "image": "assets/img/Risoto de camarão.jpeg" },
-      { "name": "Espaguete com camarão (molho de tomate confit)", "price": "R$ 44,30", "image": "assets/img/Espaguete de camarão massa fresca.jpeg" },
-      { "name": "Peixe a milanesa (arroz piamontese, mix de folhas, molho de ervas)", "price": "R$ 47,30" },
-      { "name": "Peito de frango grelhado (arroz de brócolis, aipim frito ao molho de mostarda)", "price": "R$ 31,90" },
-      { "name": "Frango desfiado ao molho de queijo (arroz branco, batata palha)", "price": "R$ 29,90" },
-      { "name": "Frango crocante temperado com ervas , arrroz de cenoura e mix de folhas", "price": "R$ 28,90", "image": "assets/img/Fg crocante.jpeg" }
+      {
+        "name": "Picanha ao molho de ervas (arroz com brócolis, batata frita, farofa de biscoito)",
+        "price": "R$ 62,00",
+        "image": "assets/img/Picanha molho de ervas.jpeg",
+        "available": true
+      },
+      {
+        "name": "Filé mignon (risoto de queijo, molho poivre, farofa de biscoito)",
+        "price": "R$ 64,90",
+        "image": "assets/img/Filé mignon com risoto de queijo.jpeg",
+        "available": true
+      },
+      {
+        "name": "Filé mignon (arroz piamontese, aipim frito e molho de mostarda)",
+        "price": "R$ 42,90",
+        "image": "assets/img/Fl com molho de mostarda.jpeg",
+        "available": true
+      },
+      {
+        "name": "Paillard de filé mignon (Fettuccine, molho de queijo)",
+        "price": "R$ 41,90",
+        "image": "assets/img/Paillard.jpeg",
+        "available": true
+      },
+      {
+        "name": "Filé à milanesa (purê de batata, arroz com cenoura)",
+        "price": "R$ 39,90",
+        "image": "assets/img/Filé à milanesa.jpeg",
+        "available": true
+      },
+      {
+        "name": "Parmegiana de carne (talharim na manteiga, com ervas, e molho de tomate e mussarela)",
+        "price": "R$ 41,70",
+        "image": "assets/img/Parmegiana.jpeg",
+        "available": true
+      },
+      {
+        "name": "Tilápia (purê, arroz de brócolis, molho de cebola roxa)",
+        "price": "R$ 42,90",
+        "image": "assets/img/Peixe ao molho de cebola roxa.jpeg",
+        "available": false
+      },
+      {
+        "name": "Moqueca com camarão e peixe (arroz de coentro, farofa de dendê)",
+        "price": "R$ 47,80",
+        "image": "assets/img/Muqueca de peixe com camarão.jpeg",
+        "available": true
+      },
+      {
+        "name": "Bobó de camarão (arroz branco, farofa de biscoito)",
+        "price": "R$ 44,90",
+        "image": "assets/img/Bobó de camarão.jpeg",
+        "available": true
+      },
+      {
+        "name": "Risoto de camarão (molho bisque de de camarão e queijo)",
+        "price": "R$ 52,90",
+        "image": "assets/img/Risoto de camarão.jpeg",
+        "available": true
+      },
+      {
+        "name": "Espaguete com camarão (molho de tomate confit)",
+        "price": "R$ 44,30",
+        "image": "assets/img/Espaguete de camarão massa fresca.jpeg",
+        "available": true
+      },
+      {
+        "name": "Peixe a milanesa (arroz piamontese, mix de folhas, molho de ervas)",
+        "price": "R$ 47,30",
+        "available": true
+      },
+      {
+        "name": "Peito de frango grelhado (arroz de brócolis, aipim frito ao molho de mostarda)",
+        "price": "R$ 31,90",
+        "available": true
+      },
+      {
+        "name": "Frango desfiado ao molho de queijo (arroz branco, batata palha)",
+        "price": "R$ 29,90",
+        "available": true
+      },
+      {
+        "name": "Frango crocante temperado com ervas , arrroz de cenoura e mix de folhas",
+        "price": "R$ 28,90",
+        "image": "assets/img/Fg crocante.jpeg",
+        "available": true
+      }
     ]
   },
   {
@@ -39,10 +136,28 @@
     "title": "Massas",
     "type": "food",
     "items": [
-      { "name": "Ravioli de queijo com ervas e molho de tomate", "price": "R$ 31,80" },
-      { "name": "Ravioli de ragu com linguiça e carne com molho de tomate", "price": "R$ 32,60", "image": "assets/img/Ravioli de ragu.jpeg" },
-      { "name": "Fettuccine ao ragu de linguiça e carne com molho de tomate", "price": "R$ 30,30", "image": "assets/img/Fettuccine com ragu.jpeg" },
-      { "name": "Nhoque de batata com ragu de com molho de tomate", "price": "R$ 28,90" }
+      {
+        "name": "Ravioli de queijo com ervas e molho de tomate",
+        "price": "R$ 31,80",
+        "available": true
+      },
+      {
+        "name": "Ravioli de ragu com linguiça e carne com molho de tomate",
+        "price": "R$ 32,60",
+        "image": "assets/img/Ravioli de ragu.jpeg",
+        "available": true
+      },
+      {
+        "name": "Fettuccine ao ragu de linguiça e carne com molho de tomate",
+        "price": "R$ 30,30",
+        "image": "assets/img/Fettuccine com ragu.jpeg",
+        "available": true
+      },
+      {
+        "name": "Nhoque de batata com ragu de com molho de tomate",
+        "price": "R$ 28,90",
+        "available": true
+      }
     ]
   },
   {
@@ -50,7 +165,12 @@
     "title": "Prato de Criança",
     "type": "food",
     "items": [
-      { "name": "Carne ou frango (arroz branco, batata frita e feijão)", "price": "R$ 22,00", "image": "assets/img/Fg infantil.jpeg" }
+      {
+        "name": "Carne ou frango (arroz branco, batata frita e feijão)",
+        "price": "R$ 22,00",
+        "image": "assets/img/Fg infantil.jpeg",
+        "available": true
+      }
     ]
   },
   {
@@ -58,12 +178,36 @@
     "title": "Guarnição",
     "type": "food",
     "items": [
-      { "name": "Rubacão com feijão branco", "price": "R$ 16,00" },
-      { "name": "Batata frita", "price": "R$ 15,00" },
-      { "name": "Arroz branco", "price": "R$ 8,00" },
-      { "name": "Arroz com brócolis", "price": "R$ 12,00" },
-      { "name": "Feijão", "price": "R$ 5,00" },
-      { "name": "Farofa de ovos", "price": "R$ 10,00" }
+      {
+        "name": "Rubacão com feijão branco",
+        "price": "R$ 16,00",
+        "available": true
+      },
+      {
+        "name": "Batata frita",
+        "price": "R$ 15,00",
+        "available": true
+      },
+      {
+        "name": "Arroz branco",
+        "price": "R$ 8,00",
+        "available": true
+      },
+      {
+        "name": "Arroz com brócolis",
+        "price": "R$ 12,00",
+        "available": true
+      },
+      {
+        "name": "Feijão",
+        "price": "R$ 5,00",
+        "available": true
+      },
+      {
+        "name": "Farofa de ovos",
+        "price": "R$ 10,00",
+        "available": true
+      }
     ]
   },
   {
@@ -71,10 +215,29 @@
     "title": "Sobremesa",
     "type": "food",
     "items": [
-      { "name": "Delícia de banana (sorvete, calda de caramelo)", "price": "R$ 9,00" },
-      { "name": "Brownie (sorvete, calda de chocolate)", "price": "R$ 11,00", "image": "assets/img/Brownie.jpeg" },
-      { "name": "Cheesecake", "price": "R$ 9,00", "image": "assets/img/Cheesecake.jpeg" },
-      { "name": "Pudim de leite", "price": "R$ 8,00", "image": "assets/img/Pudim.jpeg" }
+      {
+        "name": "Delícia de banana (sorvete, calda de caramelo)",
+        "price": "R$ 9,00",
+        "available": true
+      },
+      {
+        "name": "Brownie (sorvete, calda de chocolate)",
+        "price": "R$ 11,00",
+        "image": "assets/img/Brownie.jpeg",
+        "available": true
+      },
+      {
+        "name": "Cheesecake",
+        "price": "R$ 9,00",
+        "image": "assets/img/Cheesecake.jpeg",
+        "available": true
+      },
+      {
+        "name": "Pudim de leite",
+        "price": "R$ 8,00",
+        "image": "assets/img/Pudim.jpeg",
+        "available": true
+      }
     ]
   },
   {
@@ -82,8 +245,16 @@
     "title": "Café",
     "type": "drinks",
     "items": [
-      { "name": "Café expresso", "price": "R$ 4,00" },
-      { "name": "Capuccino", "price": "R$ 7,00" }
+      {
+        "name": "Café expresso",
+        "price": "R$ 4,00",
+        "available": true
+      },
+      {
+        "name": "Capuccino",
+        "price": "R$ 7,00",
+        "available": true
+      }
     ]
   },
   {
@@ -91,14 +262,47 @@
     "title": "Drink",
     "type": "drinks",
     "items": [
-      { "name": "Drink tardinha<span class=\"item-description\">(Gengibre, limão, polpa de maracujá, xarope de açúcar, gelo, cachaça)</span>", "price": "R$ 26,00" },
-      { "name": "Drink Espanhola", "price": "R$ 23,00" },
-      { "name": "Aperol ice<span class=\"item-description\">(Gelo, laranja, aperol, lecce)</span>", "price": "R$ 22,90" },
-      { "name": "Espaguete<span class=\"item-description\">(Aperol, gelo, limão, cerveja)</span>", "price": "R$ 23,90" },
-      { "name": "Aperol tônica<span class=\"item-description\">(Gelo, maracujá, aperol, água tônica)</span>", "price": "R$ 24,00", "image": "assets/img/Aperol água tônica.jpeg" },
-      { "name": "Campari isotônico<span class=\"item-description\">(Gelo, campari, gatorade de laranja)</span>", "price": "R$ 25,50" },
-      { "name": "Campari ice<span class=\"item-description\">(Gelo, limão, campari e ice)</span>", "price": "R$ 24,90" },
-      { "name": "Cubra libre<span class=\"item-description\">(Rum, limão e Coca-Cola)</span>", "price": "R$ 23,00" }
+      {
+        "name": "Drink tardinha<span class=\"item-description\">(Gengibre, limão, polpa de maracujá, xarope de açúcar, gelo, cachaça)</span>",
+        "price": "R$ 26,00",
+        "available": true
+      },
+      {
+        "name": "Drink Espanhola",
+        "price": "R$ 23,00",
+        "available": true
+      },
+      {
+        "name": "Aperol ice<span class=\"item-description\">(Gelo, laranja, aperol, lecce)</span>",
+        "price": "R$ 22,90",
+        "available": true
+      },
+      {
+        "name": "Espaguete<span class=\"item-description\">(Aperol, gelo, limão, cerveja)</span>",
+        "price": "R$ 23,90",
+        "available": true
+      },
+      {
+        "name": "Aperol tônica<span class=\"item-description\">(Gelo, maracujá, aperol, água tônica)</span>",
+        "price": "R$ 24,00",
+        "image": "assets/img/Aperol água tônica.jpeg",
+        "available": true
+      },
+      {
+        "name": "Campari isotônico<span class=\"item-description\">(Gelo, campari, gatorade de laranja)</span>",
+        "price": "R$ 25,50",
+        "available": true
+      },
+      {
+        "name": "Campari ice<span class=\"item-description\">(Gelo, limão, campari e ice)</span>",
+        "price": "R$ 24,90",
+        "available": true
+      },
+      {
+        "name": "Cubra libre<span class=\"item-description\">(Rum, limão e Coca-Cola)</span>",
+        "price": "R$ 23,00",
+        "available": true
+      }
     ]
   },
   {
@@ -106,9 +310,24 @@
     "title": "Coquetel",
     "type": "drinks",
     "items": [
-      { "name": "Caipirinha<span class=\"item-description\">(Cachaça, limão, xarope de açúcar e gelo)</span>", "price": "R$ 16,00", "image": "assets/img/Caipirinha.jpeg" },
-      { "name": "Caipivodka<span class=\"item-description\">(Vodka, limão, xarope de açúcar e gelo)</span>", "price": "R$ 21,00", "image": "assets/img/Capi vodkade maracujá.jpeg" },
-      { "name": "Pina colada<span class=\"item-description\">(Abacaxi, leite de coco, leite condensado, gelo e vodka)</span>", "price": "R$ 24,00", "image": "assets/img/Pina colanda.jpeg" }
+      {
+        "name": "Caipirinha<span class=\"item-description\">(Cachaça, limão, xarope de açúcar e gelo)</span>",
+        "price": "R$ 16,00",
+        "image": "assets/img/Caipirinha.jpeg",
+        "available": true
+      },
+      {
+        "name": "Caipivodka<span class=\"item-description\">(Vodka, limão, xarope de açúcar e gelo)</span>",
+        "price": "R$ 21,00",
+        "image": "assets/img/Capi vodkade maracujá.jpeg",
+        "available": true
+      },
+      {
+        "name": "Pina colada<span class=\"item-description\">(Abacaxi, leite de coco, leite condensado, gelo e vodka)</span>",
+        "price": "R$ 24,00",
+        "image": "assets/img/Pina colanda.jpeg",
+        "available": true
+      }
     ]
   },
   {
@@ -116,8 +335,16 @@
     "title": "Vinho Branco",
     "type": "drinks",
     "items": [
-      { "name": "Rose Roncher toro reservado suave - Chileno", "price": "R$ 94,00" },
-      { "name": "Frisanto Sprinter - Chileno<span class=\"item-description\">(Branco doce)</span>", "price": "R$ 87,00" }
+      {
+        "name": "Rose Roncher toro reservado suave - Chileno",
+        "price": "R$ 94,00",
+        "available": true
+      },
+      {
+        "name": "Frisanto Sprinter - Chileno<span class=\"item-description\">(Branco doce)</span>",
+        "price": "R$ 87,00",
+        "available": true
+      }
     ]
   },
   {
@@ -125,13 +352,41 @@
     "title": "Vinho Tinto",
     "type": "drinks",
     "items": [
-      { "name": "Explorador - Chileno<span class=\"item-description\">(Merlot, tinto seco)</span>", "price": "R$ 99,00" },
-      { "name": "Cosecha - Chileno<span class=\"item-description\">(Tarapaca, cabernet, meio seco)</span>", "price": "R$ 95,00" },
-      { "name": "Chilano - Chileno<span class=\"item-description\">(Carmenere, tinto seco)</span>", "price": "R$ 90,00" },
-      { "name": "G7 - Chileno<span class=\"item-description\">(Carmenère, Tinto seco)</span>", "price": "R$ 71,00" },
-      { "name": "G7 - Cabernere Sauvignon - Chileno<span class=\"item-description\">(Tinto seco)</span>", "price": "R$ 71,00" },
-      { "name": "Di Mallo - Uruguai<span class=\"item-description\">(Tinto seco)</span>", "price": "R$ 102,00" },
-      { "name": "Toro Cabernet Sauvignon - Argentino<span class=\"item-description\">(Centenário meio seco)</span>", "price": "R$ 89,00" }
+      {
+        "name": "Explorador - Chileno<span class=\"item-description\">(Merlot, tinto seco)</span>",
+        "price": "R$ 99,00",
+        "available": true
+      },
+      {
+        "name": "Cosecha - Chileno<span class=\"item-description\">(Tarapaca, cabernet, meio seco)</span>",
+        "price": "R$ 95,00",
+        "available": true
+      },
+      {
+        "name": "Chilano - Chileno<span class=\"item-description\">(Carmenere, tinto seco)</span>",
+        "price": "R$ 90,00",
+        "available": true
+      },
+      {
+        "name": "G7 - Chileno<span class=\"item-description\">(Carmenère, Tinto seco)</span>",
+        "price": "R$ 71,00",
+        "available": true
+      },
+      {
+        "name": "G7 - Cabernere Sauvignon - Chileno<span class=\"item-description\">(Tinto seco)</span>",
+        "price": "R$ 71,00",
+        "available": true
+      },
+      {
+        "name": "Di Mallo - Uruguai<span class=\"item-description\">(Tinto seco)</span>",
+        "price": "R$ 102,00",
+        "available": true
+      },
+      {
+        "name": "Toro Cabernet Sauvignon - Argentino<span class=\"item-description\">(Centenário meio seco)</span>",
+        "price": "R$ 89,00",
+        "available": true
+      }
     ]
   },
   {
@@ -139,10 +394,26 @@
     "title": "Rum",
     "type": "drinks",
     "items": [
-      { "name": "Bacardi - Carta Prata", "price": "R$ 12,00" },
-      { "name": "Bacardi - Carta Ouro", "price": "R$ 12,00" },
-      { "name": "Montilla - Carta Ouro", "price": "R$ 10,00" },
-      { "name": "Montilla - Carta Cristal", "price": "R$ 10,00" }
+      {
+        "name": "Bacardi - Carta Prata",
+        "price": "R$ 12,00",
+        "available": true
+      },
+      {
+        "name": "Bacardi - Carta Ouro",
+        "price": "R$ 12,00",
+        "available": true
+      },
+      {
+        "name": "Montilla - Carta Ouro",
+        "price": "R$ 10,00",
+        "available": true
+      },
+      {
+        "name": "Montilla - Carta Cristal",
+        "price": "R$ 10,00",
+        "available": true
+      }
     ]
   },
   {
@@ -150,10 +421,26 @@
     "title": "Aguardente",
     "type": "drinks",
     "items": [
-      { "name": "Ypióca s/palha ouro", "price": "R$ 8,00" },
-      { "name": "Rainha", "price": "R$ 8,00" },
-      { "name": "Serra Limpa", "price": "R$ 10,00" },
-      { "name": "Matuta", "price": "R$ 8,00" }
+      {
+        "name": "Ypióca s/palha ouro",
+        "price": "R$ 8,00",
+        "available": true
+      },
+      {
+        "name": "Rainha",
+        "price": "R$ 8,00",
+        "available": true
+      },
+      {
+        "name": "Serra Limpa",
+        "price": "R$ 10,00",
+        "available": true
+      },
+      {
+        "name": "Matuta",
+        "price": "R$ 8,00",
+        "available": true
+      }
     ]
   },
   {
@@ -161,10 +448,26 @@
     "title": "Conhaque",
     "type": "drinks",
     "items": [
-      { "name": "Domecq", "price": "R$ 12,00" },
-      { "name": "Dreher", "price": "R$ 8,00" },
-      { "name": "Alcatrão", "price": "R$ 7,00" },
-      { "name": "Vinho Porto", "price": "R$ 14,00" }
+      {
+        "name": "Domecq",
+        "price": "R$ 12,00",
+        "available": true
+      },
+      {
+        "name": "Dreher",
+        "price": "R$ 8,00",
+        "available": true
+      },
+      {
+        "name": "Alcatrão",
+        "price": "R$ 7,00",
+        "available": true
+      },
+      {
+        "name": "Vinho Porto",
+        "price": "R$ 14,00",
+        "available": true
+      }
     ]
   },
   {
@@ -172,10 +475,26 @@
     "title": "Cerveja - Long Neck",
     "type": "drinks",
     "items": [
-      { "name": "Heineken", "price": "R$ 10,50" },
-      { "name": "Spaten", "price": "R$ 10,00" },
-      { "name": "Eisenbahn", "price": "R$ 9,90" },
-      { "name": "Stella Artois", "price": "R$ 10,00" }
+      {
+        "name": "Heineken",
+        "price": "R$ 10,50",
+        "available": true
+      },
+      {
+        "name": "Spaten",
+        "price": "R$ 10,00",
+        "available": true
+      },
+      {
+        "name": "Eisenbahn",
+        "price": "R$ 9,90",
+        "available": true
+      },
+      {
+        "name": "Stella Artois",
+        "price": "R$ 10,00",
+        "available": true
+      }
     ]
   },
   {
@@ -183,9 +502,21 @@
     "title": "Cerveja - Lata",
     "type": "drinks",
     "items": [
-      { "name": "Budweiser", "price": "R$ 9,20" },
-      { "name": "Amstel", "price": "R$ 8,50" },
-      { "name": "Puro Malte", "price": "R$ 8,00" }
+      {
+        "name": "Budweiser",
+        "price": "R$ 9,20",
+        "available": true
+      },
+      {
+        "name": "Amstel",
+        "price": "R$ 8,50",
+        "available": true
+      },
+      {
+        "name": "Puro Malte",
+        "price": "R$ 8,00",
+        "available": true
+      }
     ]
   },
   {
@@ -193,10 +524,28 @@
     "title": "Espumante",
     "type": "drinks",
     "items": [
-      { "name": "Salton", "price": "R$ 99,00", "image": "assets/img/Espumante Salton.jpeg" },
-      { "name": "Brasil", "price": "[Preço Vazio]" },
-      { "name": "Chandon Brut", "price": "R$ 145,00", "image": "assets/img/Espumante Chandon.jpeg" },
-      { "name": "Serra Gaúcha", "price": "[Preço Vazio]" }
+      {
+        "name": "Salton",
+        "price": "R$ 99,00",
+        "image": "assets/img/Espumante Salton.jpeg",
+        "available": true
+      },
+      {
+        "name": "Brasil",
+        "price": "[Preço Vazio]",
+        "available": true
+      },
+      {
+        "name": "Chandon Brut",
+        "price": "R$ 145,00",
+        "image": "assets/img/Espumante Chandon.jpeg",
+        "available": true
+      },
+      {
+        "name": "Serra Gaúcha",
+        "price": "[Preço Vazio]",
+        "available": true
+      }
     ]
   },
   {
@@ -204,8 +553,16 @@
     "title": "Destilada",
     "type": "drinks",
     "items": [
-      { "name": "Gin", "price": "R$ 14,00" },
-      { "name": "Tequila", "price": "R$ 12,00" }
+      {
+        "name": "Gin",
+        "price": "R$ 14,00",
+        "available": true
+      },
+      {
+        "name": "Tequila",
+        "price": "R$ 12,00",
+        "available": true
+      }
     ]
   },
   {
@@ -213,8 +570,16 @@
     "title": "Licor",
     "type": "drinks",
     "items": [
-      { "name": "Marula", "price": "R$ 11,00" },
-      { "name": "Amaretto", "price": "R$ 11,20" }
+      {
+        "name": "Marula",
+        "price": "R$ 11,00",
+        "available": true
+      },
+      {
+        "name": "Amaretto",
+        "price": "R$ 11,20",
+        "available": true
+      }
     ]
   },
   {
@@ -222,16 +587,56 @@
     "title": "Refrigerante",
     "type": "drinks",
     "items": [
-      { "name": "Coca-Cola lata 350ml", "price": "R$ 5,80" },
-      { "name": "Coca-Cola Zero lata 350ml", "price": "R$ 5,80" },
-      { "name": "Guaraná Antártica lata 350ml", "price": "R$ 5,10" },
-      { "name": "Fanta laranja lata 350ml", "price": "R$ 5,20" },
-      { "name": "Fanta uva lata 350ml", "price": "R$ 5,20" },
-      { "name": "Pepsi lata 350ml", "price": "R$ 5,10" },
-      { "name": "H2O Limonete 500ml", "price": "R$ 8,00" },
-      { "name": "Red Bull 250ml", "price": "R$ 12,00" },
-      { "name": "Água tônica 350ml", "price": "R$ 5,50" },
-      { "name": "Água mineral com gás 500ml", "price": "R$ 3,00" }
+      {
+        "name": "Coca-Cola lata 350ml",
+        "price": "R$ 5,80",
+        "available": true
+      },
+      {
+        "name": "Coca-Cola Zero lata 350ml",
+        "price": "R$ 5,80",
+        "available": true
+      },
+      {
+        "name": "Guaraná Antártica lata 350ml",
+        "price": "R$ 5,10",
+        "available": true
+      },
+      {
+        "name": "Fanta laranja lata 350ml",
+        "price": "R$ 5,20",
+        "available": true
+      },
+      {
+        "name": "Fanta uva lata 350ml",
+        "price": "R$ 5,20",
+        "available": true
+      },
+      {
+        "name": "Pepsi lata 350ml",
+        "price": "R$ 5,10",
+        "available": true
+      },
+      {
+        "name": "H2O Limonete 500ml",
+        "price": "R$ 8,00",
+        "available": true
+      },
+      {
+        "name": "Red Bull 250ml",
+        "price": "R$ 12,00",
+        "available": true
+      },
+      {
+        "name": "Água tônica 350ml",
+        "price": "R$ 5,50",
+        "available": true
+      },
+      {
+        "name": "Água mineral com gás 500ml",
+        "price": "R$ 3,00",
+        "available": true
+      }
     ]
   },
   {
@@ -239,8 +644,16 @@
     "title": "Bebida Mista",
     "type": "drinks",
     "items": [
-      { "name": "Cítrus 330ml", "price": "R$ 5,00" },
-      { "name": "Gatorade 500ml", "price": "R$ 12,00" }
+      {
+        "name": "Cítrus 330ml",
+        "price": "R$ 5,00",
+        "available": true
+      },
+      {
+        "name": "Gatorade 500ml",
+        "price": "R$ 12,00",
+        "available": true
+      }
     ]
   },
   {
@@ -248,9 +661,21 @@
     "title": "Suco",
     "type": "drinks",
     "items": [
-      { "name": "Laranja", "price": "R$ 6,10" },
-      { "name": "Limonada", "price": "R$ 4,90" },
-      { "name": "Suco da fruta (Temporada)", "price": "R$ 5,00" }
+      {
+        "name": "Laranja",
+        "price": "R$ 6,10",
+        "available": true
+      },
+      {
+        "name": "Limonada",
+        "price": "R$ 4,90",
+        "available": true
+      },
+      {
+        "name": "Suco da fruta (Temporada)",
+        "price": "R$ 5,00",
+        "available": true
+      }
     ]
   },
   {
@@ -258,11 +683,31 @@
     "title": "Whisky",
     "type": "drinks",
     "items": [
-      { "name": "Black Label", "price": "R$ 16,00" },
-      { "name": "Write Horse", "price": "R$ 14,00" },
-      { "name": "Jack Daniels", "price": "R$ 16,00" },
-      { "name": "Ballantines", "price": "R$ 10,00" },
-      { "name": "Red Label", "price": "R$ 11,00" }
+      {
+        "name": "Black Label",
+        "price": "R$ 16,00",
+        "available": true
+      },
+      {
+        "name": "Write Horse",
+        "price": "R$ 14,00",
+        "available": true
+      },
+      {
+        "name": "Jack Daniels",
+        "price": "R$ 16,00",
+        "available": true
+      },
+      {
+        "name": "Ballantines",
+        "price": "R$ 10,00",
+        "available": true
+      },
+      {
+        "name": "Red Label",
+        "price": "R$ 11,00",
+        "available": true
+      }
     ]
   },
   {
@@ -270,9 +715,21 @@
     "title": "Vodka",
     "type": "drinks",
     "items": [
-      { "name": "Sminorff", "price": "R$ 10,00" },
-      { "name": "Absolut", "price": "R$ 11,00" },
-      { "name": "Dallof", "price": "R$ 10,00" }
+      {
+        "name": "Sminorff",
+        "price": "R$ 10,00",
+        "available": true
+      },
+      {
+        "name": "Absolut",
+        "price": "R$ 11,00",
+        "available": true
+      },
+      {
+        "name": "Dallof",
+        "price": "R$ 10,00",
+        "available": true
+      }
     ]
   }
 ]

@@ -79,10 +79,10 @@
         "available": true
       },
       {
-        "name": "Tilápia (purê, arroz de brócolis, molho de cebola roxa)",
+        "name": "Peixe grelhado (purê, arroz de brócolis, molho de cebola roxa)",
         "price": "R$ 42,90",
-        "image": "assets/img/Peixe ao molho de cebola roxa.jpeg",
-        "available": false
+        "image": "assets/img/Peixe grelhado.jpeg",
+        "available": true
       },
       {
         "name": "Moqueca com camarão e peixe (arroz de coentro, farofa de dendê)",

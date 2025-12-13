@@ -49,9 +49,9 @@
         "available": true
       },
       {
-        "name": "Filé mignon (risoto de queijo, molho poivre, farofa de biscoito)",
+        "name": "Filé mignon com molho poivre e risoto de queijo e farofa",
         "price": "R$ 64,90",
-        "image": "assets/img/Filé mignon com risoto de queijo.jpeg",
+        "image": "assets/img/Filé mignon com molho poivre e risoto de queijo e farofa.jpeg",
         "available": true
       },
       {
@@ -121,6 +121,7 @@
       {
         "name": "Frango desfiado ao molho de queijo (arroz branco, batata palha)",
         "price": "R$ 29,90",
+        "image": "assets/img/Frango desfiado com molho de queijo.jpeg",
         "available": true
       },
       {
@@ -139,6 +140,7 @@
       {
         "name": "Ravioli de queijo com ervas e molho de tomate",
         "price": "R$ 31,80",
+        "image": "assets/img/Ravioli de queijo.jpeg",
         "available": true
       },
       {
@@ -218,6 +220,7 @@
       {
         "name": "Delícia de banana (sorvete, calda de caramelo)",
         "price": "R$ 9,00",
+        "image": "assets/img/Delícia de banana.jpeg",
         "available": true
       },
       {

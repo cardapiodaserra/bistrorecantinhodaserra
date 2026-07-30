@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administração - Bistrô Recantinho da Serra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/tailwind/output.css">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase.js"></script>
+    <script src="js/menu-service.js"></script>
+    <script src="js/auth.js"></script>
+
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-brand-beige min-h-screen">
+    <div x-data="adminApp()" x-init="init()">
+
+        <!-- Loading -->
+        <div x-show="pageLoading" class="fixed inset-0 z-50 flex items-center justify-center bg-brand-beige">
+            <div class="text-center">
+                <div class="animate-logo-float mb-4">
+                    <img src="assets/logo.PNG" alt="Logo" class="w-24 h-24 mx-auto object-contain">
+                </div>
+                <p class="text-brand-dark">Carregando...</p>
+            </div>
+        </div>
+
+        <!-- Authenticated content -->
+        <div x-show="!pageLoading && isAuthenticated">
+            <!-- Header -->
+            <header class="bg-white shadow-sm">
+                <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <img src="assets/logo.PNG" alt="Logo" class="w-10 h-10 object-contain">
+                        <div>
+                            <h1 class="text-lg font-bold text-brand-dark">Painel de Administração</h1>
+                            <p class="text-xs text-gray-500" x-text="currentUserEmail"></p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <a href="index.html" target="_blank"
+                           class="text-sm text-brand-primary hover:text-brand-maroon transition-colors">
+                            Ver Cardápio
+                        </a>
+                        <button @click="handleLogout()"
+                                class="px-4 py-2 text-sm font-semibold text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+                            Sair
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Tab Bar -->
+            <div class="bg-white border-b border-gray-200">
+                <div class="max-w-7xl mx-auto px-4">
+                    <div class="flex gap-0">
+                        <button @click="activeTab = 'menu'"
+                                class="px-6 py-3 text-sm font-semibold border-b-2 transition-colors"
+                                :class="activeTab === 'menu' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-gray-500 hover:text-brand-dark'">
+                            Cardápio
+                        </button>
+                        <button x-show="isAdmin"
+                                @click="activeTab = 'users'"
+                                class="px-6 py-3 text-sm font-semibold border-b-2 transition-colors"
+                                :class="activeTab === 'users' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-gray-500 hover:text-brand-dark'">
+                            Usuários
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 py-6">
+                <!-- TAB: Menu -->
+                <div x-show="activeTab === 'menu'">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold text-brand-dark">Gerenciar Cardápio</h2>
+                        <button @click="openNewSectionForm()"
+                                class="px-4 py-2 bg-brand-primary text-white text-sm font-semibold rounded-lg hover:bg-brand-maroon transition-colors flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            Nova Seção
+                        </button>
+                    </div>
+
+                    <div x-show="loadingSections" class="text-center py-12 text-gray-500">Carregando...</div>
+
+                    <div x-show="!loadingSections && sections.length === 0" class="text-center py-12">
+                        <p class="text-gray-500">Nenhuma seção encontrada.</p>
+                        <p class="text-sm text-gray-400 mt-2">Adicione sua primeira seção clicando em "Nova Seção".</p>
+                    </div>
+
+                    <!-- Section List -->
+                    <div class="space-y-4">
+                        <template x-for="(section, sIdx) in sections" :key="section.id">
+                            <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                                <div class="p-4 flex items-center justify-between bg-gray-50 border-b border-gray-100">
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-sm text-gray-400 font-mono" x-text="section.order"></span>
+                                        <h3 class="font-bold text-brand-dark" x-text="section.title"></h3>
+                                        <span class="px-2 py-0.5 text-xs font-semibold rounded-full"
+                                              :class="section.type === 'food' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'"
+                                              x-text="section.type === 'food' ? 'Comida' : 'Bebida'"></span>
+                                        <span class="text-xs text-gray-400" x-text="section.items.length + ' itens'"></span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <button @click="moveSection(sIdx, -1)" x-show="sIdx > 0"
+                                                class="p-1.5 text-gray-400 hover:text-brand-dark transition-colors" title="Subir">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+                                            </svg>
+                                        </button>
+                                        <button @click="moveSection(sIdx, 1)" x-show="sIdx < sections.length - 1"
+                                                class="p-1.5 text-gray-400 hover:text-brand-dark transition-colors" title="Descer">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                            </svg>
+                                        </button>
+                                        <button @click="openEditSection(section)"
+                                                class="p-1.5 text-brand-primary hover:text-brand-maroon transition-colors" title="Editar seção">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                        </button>
+                                        <button @click="confirmDeleteSection(section)"
+                                                class="p-1.5 text-red-400 hover:text-red-600 transition-colors" title="Excluir seção">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Items -->
+                                <div class="p-4">
+                                    <div class="space-y-2">
+                                        <template x-for="(item, iIdx) in section.items" :key="iIdx">
+                                            <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition-colors border border-gray-100">
+                                                <div class="flex items-center gap-3 flex-1 min-w-0">
+                                                    <button @click="toggleItemAvailability(section.id, iIdx)"
+                                                            class="flex-shrink-0 w-6 h-6 rounded-full border-2 transition-colors"
+                                                            :class="item.available ? 'bg-green-500 border-green-500' : 'border-gray-300'">
+                                                        <svg x-show="item.available" class="w-full h-full text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                                        </svg>
+                                                    </button>
+                                                    <div class="flex-1 min-w-0">
+                                                        <p class="text-sm font-medium text-brand-dark truncate"
+                                                           :class="!item.available ? 'line-through text-gray-400' : ''"
+                                                           x-text="item.name"></p>
+                                                        <p class="text-xs text-gray-400 truncate" x-show="item.description" x-text="item.description"></p>
+                                                    </div>
+                                                    <span class="text-sm font-semibold text-brand-primary flex-shrink-0" x-text="item.price"></span>
+                                                </div>
+                                                <div class="flex items-center gap-1 ml-3">
+                                                    <button @click="openEditItem(section.id, iIdx)"
+                                                            class="p-1.5 text-gray-400 hover:text-brand-primary transition-colors" title="Editar item">
+                                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                                        </svg>
+                                                    </button>
+                                                    <button @click="confirmDeleteItem(section.id, iIdx)"
+                                                            class="p-1.5 text-gray-400 hover:text-red-500 transition-colors" title="Excluir item">
+                                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+
+                                    <button @click="openNewItemForm(section.id)"
+                                            class="mt-3 w-full py-2 border-2 border-dashed border-gray-300 rounded-xl text-sm text-gray-500 hover:border-brand-primary hover:text-brand-primary transition-colors">
+                                        + Adicionar Item
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- TAB: Users (admin only) -->
+                <div x-show="activeTab === 'users'" x-cloak>
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold text-brand-dark">Gerenciar Usuários</h2>
+                        <button @click="openNewUserForm()"
+                                class="px-4 py-2 bg-brand-primary text-white text-sm font-semibold rounded-lg hover:bg-brand-maroon transition-colors flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            Novo Usuário
+                        </button>
+                    </div>
+
+                    <div x-show="loadingUsers" class="text-center py-12 text-gray-500">Carregando...</div>
+
+                    <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Email</th>
+                                        <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Nome</th>
+                                        <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Tipo</th>
+                                        <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Status</th>
+                                        <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Criado em</th>
+                                        <th class="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <template x-for="user in users" :key="user.uid">
+                                        <tr>
+                                            <td class="px-4 py-3 text-sm text-brand-dark" x-text="user.email"></td>
+                                            <td class="px-4 py-3 text-sm text-gray-600" x-text="user.displayName || '-'"></td>
+                                            <td class="px-4 py-3">
+                                                <span class="px-2 py-0.5 text-xs font-semibold rounded-full"
+                                                      :class="user.role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'"
+                                                      x-text="user.role === 'admin' ? 'Admin' : 'Operador'"></span>
+                                            </td>
+                                            <td class="px-4 py-3">
+                                                <span class="px-2 py-0.5 text-xs font-semibold rounded-full"
+                                                      :class="user.active !== false ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
+                                                      x-text="user.active !== false ? 'Ativo' : 'Inativo'"></span>
+                                            </td>
+                                            <td class="px-4 py-3 text-sm text-gray-500" x-text="formatDate(user.createdAt)"></td>
+                                            <td class="px-4 py-3 text-right">
+                                                <button x-show="user.active !== false"
+                                                        @click="deactivateUser(user.uid)"
+                                                        class="px-3 py-1 text-xs font-semibold text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+                                                    Desativar
+                                                </button>
+                                                <button x-show="user.active === false"
+                                                        @click="reactivateUser(user.uid)"
+                                                        class="px-3 py-1 text-xs font-semibold text-green-600 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                                                    Reativar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div x-show="!loadingUsers && users.length === 0" class="text-center py-12 text-gray-500">
+                            Nenhum usuário encontrado.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Not authorized -->
+        <div x-show="!pageLoading && !isAuthenticated && authChecked && !authLoading" class="text-center py-24">
+            <p class="text-gray-500 mb-4">Você precisa estar logado para acessar esta página.</p>
+            <a href="login.html"
+               class="inline-block px-6 py-3 bg-brand-primary text-white font-semibold rounded-lg hover:bg-brand-maroon transition-colors">
+                Ir para Login
+            </a>
+        </div>
+
+        <!-- Section Modal -->
+        <div x-show="showSectionModal" x-transition x-cloak
+             class="fixed inset-0 z-50 flex items-center justify-center p-4"
+             style="background-color: rgba(0,0,0,0.2);"
+             @click.self="showSectionModal = false">
+            <div x-show="showSectionModal" x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="scale-95 opacity-0" x-transition:enter-end="scale-100 opacity-100"
+                 class="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
+                <div class="p-4 border-b border-gray-200 bg-brand-primary text-white">
+                    <h3 class="text-lg font-bold" x-text="editingSection ? 'Editar Seção' : 'Nova Seção'"></h3>
+                </div>
+                <form @submit.prevent="saveSectionForm()" class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2">Título</label>
+                        <input type="text" x-model="sectionForm.title" required
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors"
+                               placeholder="Ex: Entradas">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2">Tipo</label>
+                        <select x-model="sectionForm.type"
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors">
+                            <option value="food">Comida</option>
+                            <option value="drinks">Bebida</option>
+                        </select>
+                    </div>
+                    <div class="flex gap-3 pt-4">
+                        <button type="button" @click="showSectionModal = false"
+                                class="flex-1 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors">
+                            Cancelar
+                        </button>
+                        <button type="submit"
+                                class="flex-1 py-3 bg-brand-primary text-white font-semibold rounded-lg hover:bg-brand-maroon transition-colors"
+                                x-text="editingSection ? 'Salvar' : 'Criar'"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Item Modal -->
+        <div x-show="showItemModal" x-transition x-cloak
+             class="fixed inset-0 z-50 flex items-center justify-center p-4"
+             style="background-color: rgba(0,0,0,0.2);"
+             @click.self="showItemModal = false">
+            <div x-show="showItemModal" x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="scale-95 opacity-0" x-transition:enter-end="scale-100 opacity-100"
+                 class="bg-white rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl">
+                <div class="p-4 border-b border-gray-200 bg-brand-primary text-white">
+                    <h3 class="text-lg font-bold" x-text="editingItemIndex !== null ? 'Editar Item' : 'Novo Item'"></h3>
+                </div>
+                <form @submit.prevent="saveItemForm()" class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2">Nome <span class="text-red-500">*</span></label>
+                        <input type="text" x-model="itemForm.name" required
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors"
+                               placeholder="Nome do prato/bebida">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2">Descrição</label>
+                        <input type="text" x-model="itemForm.description"
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors"
+                               placeholder="Ingredientes, detalhes (opcional)">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2">Preço</label>
+                        <div class="flex gap-3 items-center">
+                            <input type="text" x-model="itemForm.price"
+                                   class="flex-1 px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors"
+                                   placeholder="R$ 29,90">
+                            <label class="flex items-center gap-2 text-sm text-gray-600 whitespace-nowrap">
+                                <input type="checkbox" x-model="itemForm.noPrice">
+                                Sem preço
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2">Imagem</label>
+                        <input type="text" x-model="itemForm.image"
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors"
+                               placeholder="assets/img/Prato.jpeg (opcional)">
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" x-model="itemForm.available"
+                                   class="w-5 h-5 rounded border-gray-300 text-brand-primary focus:ring-brand-primary">
+                            <span class="text-sm font-semibold text-brand-dark">Disponível</span>
+                        </label>
+                    </div>
+                    <div class="flex gap-3 pt-4">
+                        <button type="button" @click="showItemModal = false"
+                                class="flex-1 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors">
+                            Cancelar
+                        </button>
+                        <button type="submit"
+                                class="flex-1 py-3 bg-brand-primary text-white font-semibold rounded-lg hover:bg-brand-maroon transition-colors"
+                                x-text="editingItemIndex !== null ? 'Salvar' : 'Adicionar'"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- User Modal -->
+        <div x-show="showUserModal" x-transition x-cloak
+             class="fixed inset-0 z-50 flex items-center justify-center p-4"
+             style="background-color: rgba(0,0,0,0.2);"
+             @click.self="showUserModal = false">
+            <div x-show="showUserModal" x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="scale-95 opacity-0" x-transition:enter-end="scale-100 opacity-100"
+                 class="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
+                <div class="p-4 border-b border-gray-200 bg-brand-primary text-white">
+                    <h3 class="text-lg font-bold">Novo Usuário</h3>
+                </div>
+                <div x-show="userFormError" class="mx-6 mt-4 bg-red-50 border-l-4 border-red-500 p-3 rounded">
+                    <p class="text-sm text-red-700" x-text="userFormError"></p>
+                </div>
+                <form @submit.prevent="createUserForm()" class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2">Nome</label>
+                        <input type="text" x-model="userForm.displayName" required
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors"
+                               placeholder="Nome completo">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2">Email <span class="text-red-500">*</span></label>
+                        <input type="email" x-model="userForm.email" required
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors"
+                               placeholder="email@exemplo.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2">Senha <span class="text-red-500">*</span></label>
+                        <input type="password" x-model="userForm.password" required minlength="6"
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors"
+                               placeholder="Mínimo 6 caracteres">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2">Tipo</label>
+                        <select x-model="userForm.role"
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors">
+                            <option value="operator">Operador (edita cardápio)</option>
+                            <option value="admin">Administrador (controle total)</option>
+                        </select>
+                    </div>
+                    <div class="flex gap-3 pt-4">
+                        <button type="button" @click="showUserModal = false"
+                                class="flex-1 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors">
+                            Cancelar
+                        </button>
+                        <button type="submit" :disabled="userSubmitting"
+                                class="flex-1 py-3 bg-brand-primary text-white font-semibold rounded-lg hover:bg-brand-maroon transition-colors disabled:opacity-50">
+                            <span x-show="!userSubmitting">Criar Usuário</span>
+                            <span x-show="userSubmitting">Criando...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Confirm Delete Modal -->
+        <div x-show="showDeleteModal" x-transition x-cloak
+             class="fixed inset-0 z-50 flex items-center justify-center p-4"
+             style="background-color: rgba(0,0,0,0.2);"
+             @click.self="showDeleteModal = false">
+            <div x-show="showDeleteModal" x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="scale-95 opacity-0" x-transition:enter-end="scale-100 opacity-100"
+                 class="bg-white rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl p-6 text-center">
+                <div class="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
+                    <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-brand-dark mb-2">Confirmar Exclusão</h3>
+                <p class="text-sm text-gray-600 mb-2" x-text="deleteMessage"></p>
+                <p class="text-xs text-red-500 mb-6">Esta ação não pode ser desfeita.</p>
+                <div class="flex gap-3">
+                    <button @click="showDeleteModal = false"
+                            class="flex-1 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors">
+                        Cancelar
+                    </button>
+                    <button @click="executeDelete()"
+                            class="flex-1 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition-colors">
+                        Excluir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+
+    <script>
+        function adminApp() {
+            return {
+                pageLoading: true,
+                isAuthenticated: false,
+                authChecked: false,
+                authLoading: true,
+                currentUserEmail: '',
+
+                activeTab: 'menu',
+
+                sections: [],
+                loadingSections: false,
+                allOrders: [],
+
+                showSectionModal: false,
+                editingSection: null,
+                sectionForm: { title: '', type: 'food' },
+
+                showItemModal: false,
+                editingItemIndex: null,
+                editingItemSectionId: null,
+                itemForm: {
+                    name: '', description: '', price: '', noPrice: false,
+                    image: '', available: true
+                },
+
+                users: [],
+                loadingUsers: false,
+                showUserModal: false,
+                userForm: { email: '', password: '', displayName: '', role: 'operator' },
+                userFormError: null,
+                userSubmitting: false,
+
+                showDeleteModal: false,
+                deleteAction: null,
+                deleteMessage: '',
+
+                get isAdmin() {
+                    return authService.isAdmin;
+                },
+
+                async init() {
+                    authService.init();
+
+                    await new Promise(resolve => {
+                        const check = setInterval(() => {
+                            if (!authService.state.loading) {
+                                clearInterval(check);
+                                resolve();
+                            }
+                        }, 50);
+                    });
+
+                    if (!authService.state.user) {
+                        this.isAuthenticated = false;
+                        this.authChecked = true;
+                        this.authLoading = false;
+                        this.pageLoading = false;
+                        return;
+                    }
+
+                    this.isAuthenticated = true;
+                    this.authChecked = true;
+                    this.authLoading = false;
+                    this.currentUserEmail = authService.state.user.email;
+
+                    if (authService.state.userProfile?.active === false) {
+                        await authService.logout();
+                        return;
+                    }
+
+                    await this.loadSections();
+
+                    if (authService.isAdmin) {
+                        this.loadUsers();
+                    }
+
+                    this.pageLoading = false;
+                },
+
+                async handleLogout() {
+                    await authService.logout();
+                },
+
+                // ---- Sections ----
+                async loadSections() {
+                    this.loadingSections = true;
+                    try {
+                        this.sections = await menuService.fetchSections();
+                        this.allOrders = this.sections.map(s => s.order);
+                    } catch (err) {
+                        console.error('Error loading sections:', err);
+                        alert('Erro ao carregar seções.');
+                    } finally {
+                        this.loadingSections = false;
+                    }
+                },
+
+                openNewSectionForm() {
+                    this.editingSection = null;
+                    this.sectionForm = { title: '', type: 'food' };
+                    this.showSectionModal = true;
+                },
+
+                openEditSection(section) {
+                    this.editingSection = section;
+                    this.sectionForm = {
+                        title: section.title,
+                        type: section.type
+                    };
+                    this.showSectionModal = true;
+                },
+
+                async saveSectionForm() {
+                    const id = this.editingSection
+                        ? this.editingSection.id
+                        : menuService.generateSectionId(this.sectionForm.title);
+
+                    const order = this.editingSection
+                        ? this.editingSection.order
+                        : await menuService.getNextOrder();
+
+                    try {
+                        await menuService.saveSection({
+                            id,
+                            title: this.sectionForm.title,
+                            type: this.sectionForm.type,
+                            order,
+                            items: this.editingSection ? this.editingSection.items : []
+                        });
+                        this.showSectionModal = false;
+                        await this.loadSections();
+                    } catch (err) {
+                        console.error('Error saving section:', err);
+                        alert('Erro ao salvar seção.');
+                    }
+                },
+
+                async moveSection(idx, direction) {
+                    const newIdx = idx + direction;
+                    if (newIdx < 0 || newIdx >= this.sections.length) return;
+
+                    const sections = [...this.sections];
+                    [sections[idx], sections[newIdx]] = [sections[newIdx], sections[idx]];
+
+                    try {
+                        for (let i = 0; i < sections.length; i++) {
+                            await menuService.saveSection({
+                                ...sections[i],
+                                order: i
+                            });
+                        }
+                        await this.loadSections();
+                    } catch (err) {
+                        console.error('Error reordering sections:', err);
+                        alert('Erro ao reordenar seções.');
+                    }
+                },
+
+                confirmDeleteSection(section) {
+                    this.deleteAction = { type: 'section', sectionId: section.id, itemIdx: null };
+                    this.deleteMessage = `Excluir a seção "${section.title}" e todos os seus itens?`;
+                    this.showDeleteModal = true;
+                },
+
+                // ---- Items ----
+                openNewItemForm(sectionId) {
+                    this.editingItemSectionId = sectionId;
+                    this.editingItemIndex = null;
+                    this.itemForm = {
+                        name: '', description: '', price: '',
+                        noPrice: false, image: '', available: true
+                    };
+                    this.showItemModal = true;
+                },
+
+                openEditItem(sectionId, itemIdx) {
+                    this.editingItemSectionId = sectionId;
+                    this.editingItemIndex = itemIdx;
+
+                    const section = this.sections.find(s => s.id === sectionId);
+                    if (!section) return;
+                    const item = section.items[itemIdx];
+                    if (!item) return;
+
+                    this.itemForm = {
+                        name: item.name,
+                        description: item.description || '',
+                        price: item.price === '[Preço Vazio]' ? '' : item.price,
+                        noPrice: item.price === '[Preço Vazio]',
+                        image: item.image || '',
+                        available: item.available
+                    };
+                    this.showItemModal = true;
+                },
+
+                async saveItemForm() {
+                    const section = this.sections.find(s => s.id === this.editingItemSectionId);
+                    if (!section) return;
+
+                    const items = [...section.items];
+                    const itemData = {
+                        name: this.itemForm.name,
+                        description: this.itemForm.description || null,
+                        price: this.itemForm.noPrice ? '[Preço Vazio]' : this.itemForm.price,
+                        image: this.itemForm.image || null,
+                        available: this.itemForm.available
+                    };
+
+                    if (this.editingItemIndex !== null) {
+                        items[this.editingItemIndex] = itemData;
+                    } else {
+                        items.push(itemData);
+                    }
+
+                    try {
+                        await menuService.updateSectionItems(this.editingItemSectionId, items);
+                        this.showItemModal = false;
+                        await this.loadSections();
+                    } catch (err) {
+                        console.error('Error saving item:', err);
+                        alert('Erro ao salvar item.');
+                    }
+                },
+
+                confirmDeleteItem(sectionId, itemIdx) {
+                    const section = this.sections.find(s => s.id === sectionId);
+                    if (!section) return;
+                    const item = section.items[itemIdx];
+                    if (!item) return;
+
+                    this.deleteAction = { type: 'item', sectionId, itemIdx };
+                    this.deleteMessage = `Excluir o item "${item.name}"?`;
+                    this.showDeleteModal = true;
+                },
+
+                async toggleItemAvailability(sectionId, itemIdx) {
+                    const section = this.sections.find(s => s.id === sectionId);
+                    if (!section) return;
+
+                    const items = [...section.items];
+                    items[itemIdx] = { ...items[itemIdx], available: !items[itemIdx].available };
+
+                    try {
+                        await menuService.updateSectionItems(sectionId, items);
+                        await this.loadSections();
+                    } catch (err) {
+                        console.error('Error toggling availability:', err);
+                    }
+                },
+
+                // ---- Delete executor ----
+                async executeDelete() {
+                    if (!this.deleteAction) return;
+
+                    try {
+                        if (this.deleteAction.type === 'section') {
+                            await menuService.deleteSection(this.deleteAction.sectionId);
+                        } else if (this.deleteAction.type === 'item') {
+                            const section = this.sections.find(s => s.id === this.deleteAction.sectionId);
+                            if (section) {
+                                const items = [...section.items];
+                                items.splice(this.deleteAction.itemIdx, 1);
+                                await menuService.updateSectionItems(this.deleteAction.sectionId, items);
+                            }
+                        }
+                        this.showDeleteModal = false;
+                        this.deleteAction = null;
+                        await this.loadSections();
+                    } catch (err) {
+                        console.error('Error deleting:', err);
+                        alert('Erro ao excluir.');
+                    }
+                },
+
+                // ---- Users ----
+                async loadUsers() {
+                    this.loadingUsers = true;
+                    try {
+                        this.users = await authService.listUsers();
+                    } catch (err) {
+                        console.error('Error loading users:', err);
+                    } finally {
+                        this.loadingUsers = false;
+                    }
+                },
+
+                openNewUserForm() {
+                    this.userForm = { email: '', password: '', displayName: '', role: 'operator' };
+                    this.userFormError = null;
+                    this.showUserModal = true;
+                },
+
+                async createUserForm() {
+                    this.userFormError = null;
+                    this.userSubmitting = true;
+                    try {
+                        await authService.createUser(
+                            this.userForm.email,
+                            this.userForm.password,
+                            this.userForm.displayName,
+                            this.userForm.role
+                        );
+                        this.showUserModal = false;
+                        await this.loadUsers();
+                    } catch (err) {
+                        this.userFormError = err.message;
+                    } finally {
+                        this.userSubmitting = false;
+                    }
+                },
+
+                async deactivateUser(uid) {
+                    if (!confirm('Desativar este usuário? Ele não poderá mais fazer login.')) return;
+                    try {
+                        await authService.deactivateUser(uid);
+                        await this.loadUsers();
+                    } catch (err) {
+                        alert('Erro ao desativar usuário.');
+                    }
+                },
+
+                async reactivateUser(uid) {
+                    try {
+                        await authService.reactivateUser(uid);
+                        await this.loadUsers();
+                    } catch (err) {
+                        alert('Erro ao reativar usuário.');
+                    }
+                },
+
+                formatDate(date) {
+                    if (!date) return '-';
+                    if (typeof date === 'string') return date;
+                    if (date instanceof Date) {
+                        return date.toLocaleDateString('pt-BR', {
+                            day: '2-digit', month: '2-digit', year: 'numeric'
+                        });
+                    }
+                    return '-';
+                }
+            };
+        }
+    </script>
+</body>
+</html>

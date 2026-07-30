@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/logo.PNG">
     <link rel="stylesheet" href="css/tailwind/output.css">
     <link rel="stylesheet" href="css/styles.css">
 
@@ -18,53 +20,100 @@
 
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="bg-brand-beige min-h-screen flex items-center justify-center p-4">
+<body class="bg-gradient-to-br from-brand-beige to-brand-cream min-h-screen flex items-center justify-center p-4">
     <div class="w-full max-w-md" x-data="loginApp()">
-        <div x-show="loading" class="text-center">
+
+        <!-- Loading -->
+        <div x-show="loading" class="text-center py-12">
             <div class="animate-logo-float mb-6">
-                <img src="assets/logo.PNG" alt="Logo" class="w-24 h-24 mx-auto object-contain">
+                <div class="relative inline-block">
+                    <div class="absolute inset-0 bg-brand-primary opacity-10 rounded-full animate-ping w-24 h-24 mx-auto"></div>
+                    <img src="assets/logo.PNG" alt="Logo" class="w-24 h-24 mx-auto object-contain relative z-10 drop-shadow-lg">
+                </div>
             </div>
-            <p class="text-brand-dark">Carregando...</p>
+            <p class="text-brand-dark font-medium">Verificando sessão...</p>
         </div>
 
-        <div x-show="!loading" x-transition class="bg-white rounded-2xl p-8 shadow-sm">
-            <div class="text-center mb-6">
-                <img src="assets/logo.PNG" alt="Logo" class="w-20 h-20 mx-auto object-contain mb-4">
-                <h1 class="text-2xl font-bold text-brand-dark">Bistrô Recantinho da Serra</h1>
-                <p class="text-sm text-gray-500 mt-1">Painel Administrativo</p>
+        <!-- Card de Login -->
+        <div x-show="!loading" x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 translate-y-4"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             class="bg-white rounded-3xl shadow-xl overflow-hidden">
+
+            <!-- Header decorativo -->
+            <div class="bg-brand-primary px-8 py-10 text-center relative overflow-hidden">
+                <div class="absolute inset-0 opacity-5">
+                    <div class="absolute -top-10 -right-10 w-40 h-40 bg-white rounded-full"></div>
+                    <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-white rounded-full"></div>
+                </div>
+                <img src="assets/logo.PNG" alt="Logo" class="w-20 h-20 mx-auto object-contain mb-4 relative z-10">
+                <h1 class="text-2xl font-bold text-white relative z-10">Bistrô Recantinho da Serra</h1>
+                <p class="text-brand-cream text-sm mt-1 relative z-10">Painel Administrativo</p>
             </div>
 
-            <div x-show="error" x-transition
-                 class="bg-red-50 border-l-4 border-red-500 p-4 mb-4 rounded">
-                <p class="text-sm text-red-700" x-text="error"></p>
+            <!-- Formulário -->
+            <div class="p-8">
+                <div x-show="error" x-transition
+                     class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg">
+                    <p class="text-sm text-red-700" x-text="error"></p>
+                </div>
+
+                <form @submit.prevent="handleLogin()" class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2">
+                            <svg class="w-4 h-4 inline mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+                            </svg>
+                            Email
+                        </label>
+                        <input type="email" x-model="email" required autocomplete="email"
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-brand-dark placeholder-gray-400 focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 transition-all"
+                               placeholder="seu@email.com">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2">
+                            <svg class="w-4 h-4 inline mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                            </svg>
+                            Senha
+                        </label>
+                        <input type="password" x-model="password" required autocomplete="current-password"
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-brand-dark placeholder-gray-400 focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 transition-all"
+                               placeholder="Sua senha">
+                    </div>
+
+                    <button type="submit" :disabled="submitting"
+                            class="w-full py-3.5 bg-brand-primary text-white font-bold rounded-xl hover:bg-brand-maroon transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-brand-primary/20 hover:shadow-xl hover:shadow-brand-primary/30 active:scale-[0.98]">
+                        <span x-show="!submitting" class="flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                            </svg>
+                            Entrar
+                        </span>
+                        <span x-show="submitting" class="flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                            </svg>
+                            Entrando...
+                        </span>
+                    </button>
+                </form>
+
+                <div class="mt-8 text-center border-t border-gray-100 pt-6">
+                    <a href="index.html"
+                       class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-brand-primary transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                        Voltar ao cardápio
+                    </a>
+                    <p class="text-xs text-gray-400 mt-4">
+                        Acesso restrito a administradores e operadores
+                    </p>
+                </div>
             </div>
-
-            <form @submit.prevent="handleLogin()" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-semibold text-brand-dark mb-2">Email</label>
-                    <input type="email" x-model="email" required
-                           class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors"
-                           placeholder="seu@email.com" autocomplete="email">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-brand-dark mb-2">Senha</label>
-                    <input type="password" x-model="password" required
-                           class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors"
-                           placeholder="Sua senha" autocomplete="current-password">
-                </div>
-
-                <button type="submit"
-                        :disabled="submitting"
-                        class="w-full py-3 bg-brand-primary text-white font-bold rounded-lg hover:bg-brand-maroon transition-colors disabled:opacity-50">
-                    <span x-show="!submitting">Entrar</span>
-                    <span x-show="submitting">Entrando...</span>
-                </button>
-            </form>
-
-            <p class="text-xs text-gray-500 text-center mt-6">
-                Acesso restrito a administradores e operadores
-            </p>
         </div>
     </div>
 

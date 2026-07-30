@@ -1,10 +1,10 @@
 const firebaseConfig = {
-  apiKey: "SUBSTITUIR_PELA_API_KEY",
-  authDomain: "SUBSTITUIR_PELO_AUTH_DOMAIN",
-  projectId: "SUBSTITUIR_PELO_PROJECT_ID",
-  storageBucket: "SUBSTITUIR_PELO_STORAGE_BUCKET",
-  messagingSenderId: "SUBSTITUIR_PELO_SENDER_ID",
-  appId: "SUBSTITUIR_PELO_APP_ID"
+  apiKey: "AIzaSyDzrvYa7sQW3r2pvZmVEj9EeJ9LFnjVBno",
+  authDomain: "bistrorecantinhodaserra-730b4.firebaseapp.com",
+  projectId: "bistrorecantinhodaserra-730b4",
+  storageBucket: "bistrorecantinhodaserra-730b4.firebasestorage.app",
+  messagingSenderId: "948013000242",
+  appId: "1:948013000242:web:ac1894ef452e1e992ebe2b"
 };
 
 firebase.initializeApp(firebaseConfig);

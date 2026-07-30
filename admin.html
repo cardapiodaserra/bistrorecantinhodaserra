@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/logo.PNG">
     <link rel="stylesheet" href="css/tailwind/output.css">
     <link rel="stylesheet" href="css/styles.css">
 
@@ -36,7 +38,7 @@
         <div x-show="!pageLoading && isAuthenticated">
             <!-- Header -->
             <header class="bg-white shadow-sm">
-                <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+                <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <img src="assets/logo.PNG" alt="Logo" class="w-10 h-10 object-contain">
                         <div>
@@ -57,18 +59,40 @@
                 </div>
             </header>
 
+            <!-- Dashboard Stats -->
+            <div class="max-w-7xl mx-auto px-4 pt-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mb-10">
+                    <div class="bg-white rounded-xl px-5 py-5 shadow-sm">
+                        <p class="text-xs text-gray-500 uppercase font-semibold">Seções</p>
+                        <p class="text-2xl font-bold text-brand-dark mt-1.5" x-text="sections.length"></p>
+                    </div>
+                    <div class="bg-white rounded-xl px-5 py-5 shadow-sm">
+                        <p class="text-xs text-gray-500 uppercase font-semibold">Itens</p>
+                        <p class="text-2xl font-bold text-brand-dark mt-1.5" x-text="totalItems"></p>
+                    </div>
+                    <div class="bg-white rounded-xl px-5 py-5 shadow-sm">
+                        <p class="text-xs text-gray-500 uppercase font-semibold">Disponíveis</p>
+                        <p class="text-2xl font-bold text-green-600 mt-1.5" x-text="availableItems"></p>
+                    </div>
+                    <div class="bg-white rounded-xl px-5 py-5 shadow-sm">
+                        <p class="text-xs text-gray-500 uppercase font-semibold">Indisponíveis</p>
+                        <p class="text-2xl font-bold text-red-500 mt-1.5" x-text="unavailableItems"></p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Tab Bar -->
-            <div class="bg-white border-b border-gray-200">
+            <div class="bg-white border-b border-gray-200 mt-1">
                 <div class="max-w-7xl mx-auto px-4">
                     <div class="flex gap-0">
                         <button @click="activeTab = 'menu'"
-                                class="px-6 py-3 text-sm font-semibold border-b-2 transition-colors"
+                                class="px-8 py-4 text-sm font-semibold border-b-2 transition-colors"
                                 :class="activeTab === 'menu' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-gray-500 hover:text-brand-dark'">
                             Cardápio
                         </button>
                         <button x-show="isAdmin"
                                 @click="activeTab = 'users'"
-                                class="px-6 py-3 text-sm font-semibold border-b-2 transition-colors"
+                                class="px-8 py-4 text-sm font-semibold border-b-2 transition-colors"
                                 :class="activeTab === 'users' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-gray-500 hover:text-brand-dark'">
                             Usuários
                         </button>
@@ -76,10 +100,10 @@
                 </div>
             </div>
 
-            <div class="max-w-7xl mx-auto px-4 py-6">
+            <div class="max-w-7xl mx-auto px-4 py-8">
                 <!-- TAB: Menu -->
                 <div x-show="activeTab === 'menu'">
-                    <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center justify-between mb-8">
                         <h2 class="text-2xl font-bold text-brand-dark">Gerenciar Cardápio</h2>
                         <button @click="openNewSectionForm()"
                                 class="px-4 py-2 bg-brand-primary text-white text-sm font-semibold rounded-lg hover:bg-brand-maroon transition-colors flex items-center gap-2">
@@ -98,11 +122,11 @@
                     </div>
 
                     <!-- Section List -->
-                    <div class="space-y-4">
+                    <div class="space-y-6">
                         <template x-for="(section, sIdx) in sections" :key="section.id">
                             <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
-                                <div class="p-4 flex items-center justify-between bg-gray-50 border-b border-gray-100">
-                                    <div class="flex items-center gap-3">
+                                <div class="p-5 flex items-center justify-between bg-gray-50 border-b border-gray-100">
+                                    <div class="flex items-center gap-4">
                                         <span class="text-sm text-gray-400 font-mono" x-text="section.order"></span>
                                         <h3 class="font-bold text-brand-dark" x-text="section.title"></h3>
                                         <span class="px-2 py-0.5 text-xs font-semibold rounded-full"
@@ -110,7 +134,7 @@
                                               x-text="section.type === 'food' ? 'Comida' : 'Bebida'"></span>
                                         <span class="text-xs text-gray-400" x-text="section.items.length + ' itens'"></span>
                                     </div>
-                                    <div class="flex items-center gap-2">
+                                    <div class="flex items-center gap-3">
                                         <button @click="moveSection(sIdx, -1)" x-show="sIdx > 0"
                                                 class="p-1.5 text-gray-400 hover:text-brand-dark transition-colors" title="Subir">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,10 +163,10 @@
                                 </div>
 
                                 <!-- Items -->
-                                <div class="p-4">
-                                    <div class="space-y-2">
+                                <div class="p-5 pt-4">
+                                    <div class="space-y-4">
                                         <template x-for="(item, iIdx) in section.items" :key="iIdx">
-                                            <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition-colors border border-gray-100">
+                                            <div class="flex items-center justify-between p-4 rounded-xl hover:bg-gray-50 transition-colors border border-gray-100">
                                                 <div class="flex items-center gap-3 flex-1 min-w-0">
                                                     <button @click="toggleItemAvailability(section.id, iIdx)"
                                                             class="flex-shrink-0 w-6 h-6 rounded-full border-2 transition-colors"
@@ -178,7 +202,7 @@
                                     </div>
 
                                     <button @click="openNewItemForm(section.id)"
-                                            class="mt-3 w-full py-2 border-2 border-dashed border-gray-300 rounded-xl text-sm text-gray-500 hover:border-brand-primary hover:text-brand-primary transition-colors">
+                                            class="mt-4 w-full py-3 border-2 border-dashed border-gray-300 rounded-xl text-sm text-gray-500 hover:border-brand-primary hover:text-brand-primary transition-colors">
                                         + Adicionar Item
                                     </button>
                                 </div>
@@ -189,7 +213,7 @@
 
                 <!-- TAB: Users (admin only) -->
                 <div x-show="activeTab === 'users'" x-cloak>
-                    <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center justify-between mb-8">
                         <h2 class="text-2xl font-bold text-brand-dark">Gerenciar Usuários</h2>
                         <button @click="openNewUserForm()"
                                 class="px-4 py-2 bg-brand-primary text-white text-sm font-semibold rounded-lg hover:bg-brand-maroon transition-colors flex items-center gap-2">
@@ -207,12 +231,12 @@
                             <table class="w-full">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Email</th>
-                                        <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Nome</th>
-                                        <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Tipo</th>
-                                        <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Status</th>
-                                        <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Criado em</th>
-                                        <th class="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Ações</th>
+                                        <th class="text-left px-5 py-4 text-xs font-semibold text-gray-500 uppercase">Email</th>
+                                        <th class="text-left px-5 py-4 text-xs font-semibold text-gray-500 uppercase">Nome</th>
+                                        <th class="text-left px-5 py-4 text-xs font-semibold text-gray-500 uppercase">Tipo</th>
+                                        <th class="text-left px-5 py-4 text-xs font-semibold text-gray-500 uppercase">Status</th>
+                                        <th class="text-left px-5 py-4 text-xs font-semibold text-gray-500 uppercase">Criado em</th>
+                                        <th class="text-right px-5 py-4 text-xs font-semibold text-gray-500 uppercase">Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
@@ -256,8 +280,45 @@
             </div>
         </div>
 
+        <!-- Toast Notification -->
+        <div x-show="notification" x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="translate-y-2 opacity-0"
+             x-transition:enter-end="translate-y-0 opacity-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="translate-y-0 opacity-100"
+             x-transition:leave-end="translate-y-2 opacity-0"
+             class="fixed top-4 right-4 z-[100] max-w-sm"
+             style="display: none;">
+            <div class="rounded-xl p-4 shadow-lg flex items-start gap-3"
+                 :class="notification?.type === 'error' ? 'bg-red-50 border-l-4 border-red-500' :
+                         notification?.type === 'success' ? 'bg-green-50 border-l-4 border-green-500' :
+                         'bg-blue-50 border-l-4 border-blue-500'">
+                <svg x-show="notification?.type === 'success'" class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <svg x-show="notification?.type === 'error'" class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <svg x-show="notification?.type === 'info' || !notification?.type" class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <div class="flex-1">
+                    <p class="text-sm font-medium"
+                       :class="notification?.type === 'error' ? 'text-red-800' :
+                               notification?.type === 'success' ? 'text-green-800' :
+                               'text-blue-800'"
+                       x-text="notification?.message"></p>
+                </div>
+                <button @click="dismissNotification()" class="flex-shrink-0 ml-2">
+                    <svg class="w-4 h-4 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
         <!-- Not authorized -->
-        <div x-show="!pageLoading && !isAuthenticated && authChecked && !authLoading" class="text-center py-24">
+        <div x-show="!pageLoading && !isAuthenticated && authChecked" class="text-center py-24">
             <p class="text-gray-500 mb-4">Você precisa estar logado para acessar esta página.</p>
             <a href="login.html"
                class="inline-block px-6 py-3 bg-brand-primary text-white font-semibold rounded-lg hover:bg-brand-maroon transition-colors">
@@ -273,12 +334,12 @@
             <div x-show="showSectionModal" x-transition:enter="transition ease-out duration-200"
                  x-transition:enter-start="scale-95 opacity-0" x-transition:enter-end="scale-100 opacity-100"
                  class="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
-                <div class="p-4 border-b border-gray-200 bg-brand-primary text-white">
+                 <div class="px-6 py-5 border-b border-gray-200 bg-brand-primary text-white">
                     <h3 class="text-lg font-bold" x-text="editingSection ? 'Editar Seção' : 'Nova Seção'"></h3>
                 </div>
-                <form @submit.prevent="saveSectionForm()" class="p-6 space-y-4">
+                <form @submit.prevent="saveSectionForm()" class="px-6 py-6 space-y-5">
                     <div>
-                        <label class="block text-sm font-semibold text-brand-dark mb-2">Título</label>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2.5">Título</label>
                         <input type="text" x-model="sectionForm.title" required
                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors"
                                placeholder="Ex: Entradas">
@@ -461,15 +522,14 @@
             return {
                 pageLoading: true,
                 isAuthenticated: false,
+                isAdmin: false,
                 authChecked: false,
-                authLoading: true,
                 currentUserEmail: '',
 
                 activeTab: 'menu',
 
                 sections: [],
                 loadingSections: false,
-                allOrders: [],
 
                 showSectionModal: false,
                 editingSection: null,
@@ -494,8 +554,17 @@
                 deleteAction: null,
                 deleteMessage: '',
 
-                get isAdmin() {
-                    return authService.isAdmin;
+                notification: null,
+                notificationTimer: null,
+
+                get totalItems() {
+                    return this.sections.reduce((sum, s) => sum + s.items.length, 0);
+                },
+                get availableItems() {
+                    return this.sections.reduce((sum, s) => sum + s.items.filter(i => i.available).length, 0);
+                },
+                get unavailableItems() {
+                    return this.totalItems - this.availableItems;
                 },
 
                 async init() {
@@ -513,15 +582,14 @@
                     if (!authService.state.user) {
                         this.isAuthenticated = false;
                         this.authChecked = true;
-                        this.authLoading = false;
                         this.pageLoading = false;
                         return;
                     }
 
                     this.isAuthenticated = true;
                     this.authChecked = true;
-                    this.authLoading = false;
                     this.currentUserEmail = authService.state.user.email;
+                    this.isAdmin = authService.state.userProfile?.role === 'admin';
 
                     if (authService.state.userProfile?.active === false) {
                         await authService.logout();
@@ -530,7 +598,7 @@
 
                     await this.loadSections();
 
-                    if (authService.isAdmin) {
+                    if (this.isAdmin) {
                         this.loadUsers();
                     }
 
@@ -549,7 +617,7 @@
                         this.allOrders = this.sections.map(s => s.order);
                     } catch (err) {
                         console.error('Error loading sections:', err);
-                        alert('Erro ao carregar seções.');
+                        this.notify('Erro ao carregar seções.', 'error');
                     } finally {
                         this.loadingSections = false;
                     }
@@ -591,7 +659,7 @@
                         await this.loadSections();
                     } catch (err) {
                         console.error('Error saving section:', err);
-                        alert('Erro ao salvar seção.');
+                        this.notify('Erro ao salvar seção.', 'error');
                     }
                 },
 
@@ -612,7 +680,7 @@
                         await this.loadSections();
                     } catch (err) {
                         console.error('Error reordering sections:', err);
-                        alert('Erro ao reordenar seções.');
+                        this.notify('Erro ao reordenar seções.', 'error');
                     }
                 },
 
@@ -678,7 +746,7 @@
                         await this.loadSections();
                     } catch (err) {
                         console.error('Error saving item:', err);
-                        alert('Erro ao salvar item.');
+                        this.notify('Erro ao salvar item.', 'error');
                     }
                 },
 
@@ -728,7 +796,7 @@
                         await this.loadSections();
                     } catch (err) {
                         console.error('Error deleting:', err);
-                        alert('Erro ao excluir.');
+                        this.notify('Erro ao excluir.', 'error');
                     }
                 },
 
@@ -775,7 +843,7 @@
                         await authService.deactivateUser(uid);
                         await this.loadUsers();
                     } catch (err) {
-                        alert('Erro ao desativar usuário.');
+                        this.notify('Erro ao desativar usuário.', 'error');
                     }
                 },
 
@@ -784,8 +852,20 @@
                         await authService.reactivateUser(uid);
                         await this.loadUsers();
                     } catch (err) {
-                        alert('Erro ao reativar usuário.');
+                        this.notify('Erro ao reativar usuário.', 'error');
                     }
+                },
+
+                notify(message, type = 'info') {
+                    if (this.notificationTimer) clearTimeout(this.notificationTimer);
+                    this.notification = { message, type };
+                    this.notificationTimer = setTimeout(() => {
+                        this.notification = null;
+                    }, 4000);
+                },
+                dismissNotification() {
+                    this.notification = null;
+                    if (this.notificationTimer) clearTimeout(this.notificationTimer);
                 },
 
                 formatDate(date) {

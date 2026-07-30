@@ -1,5 +1,5 @@
 // Service Worker para PWA
-const CACHE_NAME = 'bistro-recantinho-v2';
+const CACHE_NAME = 'bistro-recantinho-v4';
 const BASE_PATH = '/bistrorecantinhodaserra';
 const urlsToCache = [
   `${BASE_PATH}/`,
@@ -13,6 +13,7 @@ const urlsToCache = [
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
   'https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js',
   'https://www.gstatic.com/firebasejs/12.16.0/firebase-app-compat.js',
+  'https://www.gstatic.com/firebasejs/12.16.0/firebase-auth-compat.js',
   'https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore-compat.js'
 ];
 
@@ -50,27 +51,28 @@ self.addEventListener('activate', (event) => {
 
 // Estratégia de cache: Network First com fallback para Cache
 self.addEventListener('fetch', (event) => {
+  // Ignorar requisições que não sejam GET (Firebase Firestore usa POST/WebChannel)
+  if (event.request.method !== 'GET') return;
+
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        // Se a resposta é válida, clone e adicione ao cache
         if (response && response.status === 200) {
           const responseToCache = response.clone();
           caches.open(CACHE_NAME)
             .then((cache) => {
               cache.put(event.request, responseToCache);
-            });
+            })
+            .catch(() => {});
         }
         return response;
       })
       .catch(() => {
-        // Se falhar, tente buscar do cache
         return caches.match(event.request)
           .then((cachedResponse) => {
             if (cachedResponse) {
               return cachedResponse;
             }
-            // Se não houver no cache e for uma navegação, retorne a página offline
             if (event.request.mode === 'navigate') {
               return caches.match(`${BASE_PATH}/`);
             }

@@ -332,12 +332,12 @@
             <div x-show="showSectionModal" x-transition:enter="transition ease-out duration-200"
                  x-transition:enter-start="scale-95 opacity-0" x-transition:enter-end="scale-100 opacity-100"
                  class="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
-                <div class="p-4 border-b border-gray-200 bg-brand-primary text-white">
+                 <div class="px-6 py-5 border-b border-gray-200 bg-brand-primary text-white">
                     <h3 class="text-lg font-bold" x-text="editingSection ? 'Editar Seção' : 'Nova Seção'"></h3>
                 </div>
-                <form @submit.prevent="saveSectionForm()" class="p-6 space-y-4">
+                <form @submit.prevent="saveSectionForm()" class="px-6 py-6 space-y-5">
                     <div>
-                        <label class="block text-sm font-semibold text-brand-dark mb-2">Título</label>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2.5">Título</label>
                         <input type="text" x-model="sectionForm.title" required
                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors"
                                placeholder="Ex: Entradas">

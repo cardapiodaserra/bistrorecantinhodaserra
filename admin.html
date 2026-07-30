@@ -38,7 +38,7 @@
         <div x-show="!pageLoading && isAuthenticated">
             <!-- Header -->
             <header class="bg-white shadow-sm">
-                <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+                <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <img src="assets/logo.PNG" alt="Logo" class="w-10 h-10 object-contain">
                         <div>
@@ -61,38 +61,38 @@
 
             <!-- Dashboard Stats -->
             <div class="max-w-7xl mx-auto px-4 pt-8">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                    <div class="bg-white rounded-xl p-4 shadow-sm">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mb-10">
+                    <div class="bg-white rounded-xl px-5 py-5 shadow-sm">
                         <p class="text-xs text-gray-500 uppercase font-semibold">Seções</p>
-                        <p class="text-2xl font-bold text-brand-dark mt-1" x-text="sections.length"></p>
+                        <p class="text-2xl font-bold text-brand-dark mt-1.5" x-text="sections.length"></p>
                     </div>
-                    <div class="bg-white rounded-xl p-4 shadow-sm">
+                    <div class="bg-white rounded-xl px-5 py-5 shadow-sm">
                         <p class="text-xs text-gray-500 uppercase font-semibold">Itens</p>
-                        <p class="text-2xl font-bold text-brand-dark mt-1" x-text="totalItems"></p>
+                        <p class="text-2xl font-bold text-brand-dark mt-1.5" x-text="totalItems"></p>
                     </div>
-                    <div class="bg-white rounded-xl p-4 shadow-sm">
+                    <div class="bg-white rounded-xl px-5 py-5 shadow-sm">
                         <p class="text-xs text-gray-500 uppercase font-semibold">Disponíveis</p>
-                        <p class="text-2xl font-bold text-green-600 mt-1" x-text="availableItems"></p>
+                        <p class="text-2xl font-bold text-green-600 mt-1.5" x-text="availableItems"></p>
                     </div>
-                    <div class="bg-white rounded-xl p-4 shadow-sm">
+                    <div class="bg-white rounded-xl px-5 py-5 shadow-sm">
                         <p class="text-xs text-gray-500 uppercase font-semibold">Indisponíveis</p>
-                        <p class="text-2xl font-bold text-red-500 mt-1" x-text="unavailableItems"></p>
+                        <p class="text-2xl font-bold text-red-500 mt-1.5" x-text="unavailableItems"></p>
                     </div>
                 </div>
             </div>
 
             <!-- Tab Bar -->
-            <div class="bg-white border-b border-gray-200">
+            <div class="bg-white border-b border-gray-200 mt-1">
                 <div class="max-w-7xl mx-auto px-4">
                     <div class="flex gap-0">
                         <button @click="activeTab = 'menu'"
-                                class="px-6 py-3 text-sm font-semibold border-b-2 transition-colors"
+                                class="px-8 py-4 text-sm font-semibold border-b-2 transition-colors"
                                 :class="activeTab === 'menu' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-gray-500 hover:text-brand-dark'">
                             Cardápio
                         </button>
                         <button x-show="isAdmin"
                                 @click="activeTab = 'users'"
-                                class="px-6 py-3 text-sm font-semibold border-b-2 transition-colors"
+                                class="px-8 py-4 text-sm font-semibold border-b-2 transition-colors"
                                 :class="activeTab === 'users' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-gray-500 hover:text-brand-dark'">
                             Usuários
                         </button>
@@ -163,7 +163,7 @@
                                 </div>
 
                                 <!-- Items -->
-                                <div class="p-5">
+                                <div class="p-5 pt-4">
                                     <div class="space-y-4">
                                         <template x-for="(item, iIdx) in section.items" :key="iIdx">
                                             <div class="flex items-center justify-between p-4 rounded-xl hover:bg-gray-50 transition-colors border border-gray-100">

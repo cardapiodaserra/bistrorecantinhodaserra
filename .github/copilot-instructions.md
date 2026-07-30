@@ -1,3 +1,49 @@
+## Copilot instructions for this project (resumo rápido)
+
+Projeto: PWA estática (HTML + Tailwind via CDN + Alpine.js) que renderiza um cardápio a partir de `data/data.json`, mantém carrinho em `localStorage` e finaliza pedidos via WhatsApp.
+
+Pontos de entrada e arquivos chave
+- `index.html` — monta Alpine (`x-data="menuApp()"`), injeta `tailwind.config` e inclui `js/app.js` e `css/styles.css`.
+- `js/app.js` — lógica principal: `init()`, manipulação de `cart`, `favorites`, `user`, geração de mensagem WhatsApp (`gerarMensagemPedido()`), e `numeroWhatsApp` (constante a atualizar).
+- `data/data.json` — fonte de verdade: array de seções. IDs devem mapear para elementos com `id="section-<id>"`.
+- `sw.js` / `manifest.json` — PWA: cache, estratégia network-first, e metadados.
+
+Convenções CSS/HTML/JS específicas
+- Descrições de item ficam dentro de `name` como `<span class="item-description">…</span>`; o template separa título e subtítulo por `<span`.
+- Preço usa formato brasileiro: `R$ 12,34` (vírgula como decimal). Parsing em `js/app.js` assume esse formato.
+- Para itens sem preço usar `price: "[Preço Vazio]"` — UI oculta badge e botão de compra.
+- Chaves de `localStorage`: `favorites`, `cart`, `user` (armazenamento em JSON simples).
+
+Fluxos importantes
+- Fluxo de pedido: preencher `user`, abrir `finalizarPedido()` → `enviarPedido()` → `https://wa.me/<numero>?text=...`. Atualize `numeroWhatsApp` em `js/app.js` com formato internacional sem `+`.
+- Navegação: `scrollToSection(id)` espera `section-<id>` no DOM para rolar suavemente.
+
+PWA / desenvolvimento local
+- Sempre servir via HTTP para testar `fetch()` e `sw.js` (Live Server, `npx serve` ou `npx http-server`).
+  Exemplo (bash):
+  ```bash
+  npx serve -s .
+  ```
+- Atualize `CACHE_NAME` em `sw.js` ao publicar mudanças.
+
+Pequenos gotchas úteis ao editar
+- Qualquer mudança no shape de `data/data.json` precisa ser refletida em `js/app.js` e nos templates (`index.html`).
+- IDs e `section-<id>`: manter correspondência para que os botões no sidebar funcionem.
+- Não alterar o parser de moeda sem migrar dados — o app espera `R$ xx,yy`.
+
+Onde olhar para entender o código rapidamente
+- Template e classes Tailwind: `index.html` (header, grid, `x-for filteredSections`).
+- Lógica do app: `js/app.js` — buscar funções: `init`, `filteredSections`, `addToCart`, `saveCart`, `gerarMensagemPedido`.
+- PWA: `sw.js` (CACHE_NAME, lista de assets) e `manifest.json` (ícones/cores).
+
+O que um agente deve evitar
+- Reformatar massivamente `index.html`/`css/styles.css` — pequenas mudanças visuais são ok, mas a UI é sensível ao markup/Tailwind.
+- Trocar nomes de `localStorage` sem criar migração.
+
+Se algo estiver ambíguo
+- Peça o número de WhatsApp final e confirme se queremos migrar o shape do `cart` antes de alterar `localStorage`.
+
+Fim — peça feedback se quiser que eu acrescente exemplos de edição (ex.: adicionar seção ao `data.json`, atualizar `numeroWhatsApp`, ou bump do `CACHE_NAME`).
 # Copilot instructions for this project
 
 Project type: static PWA (HTML + Tailwind via CDN + Alpine.js) that renders a menu from JSON and supports cart + WhatsApp ordering with offline capability.

@@ -1,5 +1,5 @@
 // Service Worker para PWA
-const CACHE_NAME = 'bistro-recantinho-v2';
+const CACHE_NAME = 'bistro-recantinho-v3';
 const BASE_PATH = '/bistrorecantinhodaserra';
 const urlsToCache = [
   `${BASE_PATH}/`,

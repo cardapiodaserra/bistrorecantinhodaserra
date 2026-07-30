@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migração data.json → Firestore</title>
+    <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase.js"></script>
+    <style>
+        body { font-family: monospace; max-width: 800px; margin: 50px auto; padding: 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #ff6b6b; }
+        #log { background: #16213e; padding: 20px; border-radius: 8px; white-space: pre-wrap; line-height: 1.6; font-size: 14px; }
+        .success { color: #51cf66; }
+        .error { color: #ff6b6b; }
+        .info { color: #74c0fc; }
+        button { padding: 12px 24px; background: #ff6b6b; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; margin: 10px 0; }
+        button:hover { background: #ee5a5a; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .warning { background: #fcc419; color: #1a1a2e; padding: 10px; border-radius: 8px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>🚀 Migração: data.json → Firestore</h1>
+
+    <div class="warning">
+        <strong>⚠️ ATENÇÃO:</strong> Antes de executar, temporariamente defina as regras do Firestore como:
+        <code style="display:block;margin:8px 0;padding:8px;background:#333;border-radius:4px;">
+rules_version = '2';<br>
+service cloud.firestore {<br>
+&nbsp;&nbsp;match /databases/{database}/documents {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;match /{document=**} {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow read, write: if true;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;}<br>
+}
+        </code>
+        Após a migração, restaure as regras de segurança definitivas.
+    </div>
+
+    <button id="migrateBtn" onclick="migrate()">▶ Iniciar Migração</button>
+    <button onclick="window.open('data/data.json')" style="background:#74c0fc;">📄 Ver data.json</button>
+
+    <pre id="log">Aguardando...</pre>
+
+    <script>
+        const logEl = document.getElementById('log');
+        const btn = document.getElementById('migrateBtn');
+
+        function print(msg, className) {
+            logEl.innerHTML += `<span class="${className || ''}">${msg}</span>\n`;
+        }
+
+        async function migrate() {
+            btn.disabled = true;
+            btn.textContent = '⏳ Migrando...';
+            logEl.innerHTML = '';
+
+            const anyCollection = await db.collection('menu').limit(1).get();
+            if (!anyCollection.empty) {
+                print('⚠️ A coleção "menu" já contém documentos. Deseja continuar mesmo assim?', 'error');
+                print('ℹ️ Se continuar, documentos com IDs existentes serão sobrescritos.', 'info');
+                const proceed = confirm('A coleção "menu" já tem dados. Continuar mesmo assim?');
+                if (!proceed) {
+                    print('❌ Migração cancelada pelo usuário.', 'error');
+                    btn.disabled = false;
+                    btn.textContent = '▶ Iniciar Migração';
+                    return;
+                }
+            }
+
+            try {
+                print('📂 Carregando data.json...', 'info');
+                const response = await fetch('data/data.json');
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                const sections = await response.json();
+                print(`✅ Encontradas ${sections.length} seções.\n`, 'success');
+
+                for (let i = 0; i < sections.length; i++) {
+                    const section = sections[i];
+
+                    const items = section.items.map(item => {
+                        let name = item.name;
+                        let description = null;
+
+                        const spanMatch = item.name.match(/^(.*?)<span class="item-description">(.*?)<\/span>$/);
+                        if (spanMatch) {
+                            name = spanMatch[1].trim();
+                            description = spanMatch[2];
+                        }
+
+                        return {
+                            name: name,
+                            description: description,
+                            price: item.price || '[Preço Vazio]',
+                            image: item.image || null,
+                            available: item.available !== false
+                        };
+                    });
+
+                    const doc = {
+                        id: section.id,
+                        title: section.title,
+                        type: section.type,
+                        order: i,
+                        items: items
+                    };
+
+                    try {
+                        await db.collection('menu').doc(section.id).set(doc);
+                        print(`✅ [${i+1}/${sections.length}] "${section.title}" — ${items.length} itens`, 'success');
+                    } catch (err) {
+                        print(`❌ [${i+1}/${sections.length}] "${section.title}": ${err.message}`, 'error');
+                    }
+                }
+
+                print('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'info');
+                print('🎉 MIGRAÇÃO CONCLUÍDA!', 'success');
+                print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'info');
+                print('\n📌 Próximos passos:', 'info');
+                print('1. Verifique os dados no Console Firebase → Firestore', 'info');
+                print('2. Restaure as regras de segurança (Etapa 3 do plano)', 'info');
+                print('3. Remova data/data.json (ou renomeie para .bak)', 'info');
+                print('4. Recarregue index.html — deve ler do Firestore agora', 'info');
+                print('5. Crie o primeiro admin manualmente no console Firebase Auth', 'info');
+                print('6. Teste login com admin em login.html', 'info');
+
+            } catch (err) {
+                print(`❌ Erro fatal: ${err.message}`, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '▶ Iniciar Migração';
+            }
+        }
+    </script>
+</body>
+</html>

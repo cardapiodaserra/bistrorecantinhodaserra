@@ -21,6 +21,7 @@ const authService = {
             if (data.active === false) {
               await auth.signOut();
               this.state.error = 'Esta conta foi desativada.';
+              this.state.loading = false;
               return;
             }
             this.state.userProfile = data;

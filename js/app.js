@@ -23,33 +23,25 @@ function menuApp() {
             try {
                 this.isLoading = true;
                 
-                const response = await fetch('data/data.json');
-                this.sections = await response.json();
+                this.sections = await menuService.fetchSections();
                 
-                // Carregar favoritos do localStorage
                 const savedFavorites = localStorage.getItem('favorites');
                 if (savedFavorites) {
                     this.favorites = JSON.parse(savedFavorites);
                 }
                 
-                // Carregar carrinho do localStorage
                 const savedCart = localStorage.getItem('cart');
                 if (savedCart) {
                     this.cart = JSON.parse(savedCart);
                 }
                 
-                // Carregar dados do usuário
                 const savedUser = localStorage.getItem('user');
                 if (savedUser) {
                     this.user = JSON.parse(savedUser);
                 }
                 
-                // Simular um delay mínimo para mostrar o loading (melhora UX)
-                await new Promise(resolve => setTimeout(resolve, 800));
-                
             } catch (error) {
                 console.error('Erro ao carregar dados:', error);
-                // Erro será exibido no console - usuário pode tentar recarregar a página
             } finally {
                 this.isLoading = false;
             }
@@ -224,7 +216,7 @@ function menuApp() {
             msg += `\n*ITENS:*\n`;
             
             this.cart.forEach(item => {
-                msg += `\n${item.quantity}x ${item.name.split('<span')[0]}\n`;
+                msg += `\n${item.quantity}x ${item.name}\n`;
                 msg += `   ${item.price} cada\n`;
                 msg += `   Categoria: ${item.category}\n`;
             });

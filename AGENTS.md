@@ -4,6 +4,8 @@
 
 ```
 npm run dev          # http-server . -p 3000 -c-1
+npm run build:css    # Tailwind v4 → css/tailwind/output.css (minified)
+npm run watch:css    # Tailwind v4 watch mode (auto-rebuild on CSS changes)
 ```
 
 Never open `file://` — `fetch()`, Service Worker, and Firebase SDK require HTTP.

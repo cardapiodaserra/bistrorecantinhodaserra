@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "http-server . -p 3000 -c-1"
+    "dev": "http-server . -p 3000 -c-1",
+    "build:css": "npx @tailwindcss/cli -i ./css/tailwind/input.css -o ./css/tailwind/output.css --minify",
+    "watch:css": "npx @tailwindcss/cli -i ./css/tailwind/input.css -o ./css/tailwind/output.css --watch"
   },
   "devDependencies": {
-    "http-server": "^14.1.1"
+    "@tailwindcss/cli": "^4.3.3",
+    "http-server": "^14.1.1",
+    "tailwindcss": "^4.3.3"
   }
 }

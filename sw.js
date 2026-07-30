@@ -1,16 +1,19 @@
 // Service Worker para PWA
-const CACHE_NAME = 'bistro-recantinho-v1';
+const CACHE_NAME = 'bistro-recantinho-v2';
 const BASE_PATH = '/bistrorecantinhodaserra';
 const urlsToCache = [
   `${BASE_PATH}/`,
   `${BASE_PATH}/index.html`,
   `${BASE_PATH}/css/styles.css`,
   `${BASE_PATH}/js/app.js`,
-  `${BASE_PATH}/data/data.json`,
+  `${BASE_PATH}/js/firebase.js`,
+  `${BASE_PATH}/js/menu-service.js`,
   `${BASE_PATH}/assets/logo.PNG`,
   `${BASE_PATH}/css/tailwind/output.css`,
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
-  'https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js'
+  'https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js',
+  'https://www.gstatic.com/firebasejs/12.16.0/firebase-app-compat.js',
+  'https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore-compat.js'
 ];
 
 // Instalação do Service Worker

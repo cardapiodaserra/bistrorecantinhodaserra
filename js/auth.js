@@ -16,16 +16,20 @@ const authService = {
       if (user) {
         try {
           const doc = await db.collection('users').doc(user.uid).get();
-          if (doc.exists) {
-            const data = doc.data();
-            if (data.active === false) {
-              await auth.signOut();
-              this.state.error = 'Esta conta foi desativada.';
-              this.state.loading = false;
-              return;
-            }
-            this.state.userProfile = data;
+          if (!doc.exists) {
+            await auth.signOut();
+            this.state.error = 'Esta conta não possui perfil. Contate o administrador.';
+            this.state.loading = false;
+            return;
           }
+          const data = doc.data();
+          if (data.active === false) {
+            await auth.signOut();
+            this.state.error = 'Esta conta foi desativada.';
+            this.state.loading = false;
+            return;
+          }
+          this.state.userProfile = data;
         } catch (err) {
           console.error('Erro ao carregar perfil:', err);
         }
@@ -94,6 +98,10 @@ const authService = {
 
   async reactivateUser(uid) {
     await db.collection('users').doc(uid).update({ active: true });
+  },
+
+  async deleteUser(uid) {
+    await db.collection('users').doc(uid).delete();
   },
 
   async listUsers() {

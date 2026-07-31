@@ -51,6 +51,7 @@ Currency format: `R$ 12,34` (comma decimal). Sentinel `[Preço Vazio]` hides pri
 - Auth state listener: `authService.init()` → poll `authService.state.loading` until false, THEN read `userProfile`.
 - User creation uses Firebase Auth REST API (`identitytoolkit.googleapis.com/v1/accounts:signUp`) — does NOT affect current session.
 - Soft-delete for users: set `active: false` in Firestore (not Auth deletion).
+- Hard-delete for users: `deleteUser(uid)` removes the Firestore profile; `authService.init()` signs out users with no profile. Auth accounts can't be deleted client-side (needs Admin SDK).
 
 ## PWA
 
@@ -78,7 +79,7 @@ Update `numeroWhatsApp` in `js/app.js` (`558381157571`). International format wi
 | File | Purpose |
 |------|---------|
 | `js/firebase.js` | Firebase init with `enablePersistence()` |
-| `js/auth.js` | `authService`: login, logout, create/deactivate/list users |
+| `js/auth.js` | `authService`: login, logout, create/deactivate/delete/list users |
 | `js/menu-service.js` | `menuService`: `fetchSections`, `saveSection`, `deleteSection` |
 | `js/storage-service.js` | `storageService`: `uploadItemImage`, `deleteImage` |
 | `js/app.js` | Public menu Alpine component |

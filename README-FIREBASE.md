@@ -180,11 +180,10 @@ service cloud.firestore {
     // Usuários (coleção "users"):
     //   - leitura: qualquer staff (admin ou operador)
     //   - escrita: apenas admin
-    //   - delete: NUNCA pelo client (usamos soft-delete: active: false)
+    //   - delete: apenas admin (exclusão definitiva do perfil)
     match /users/{userId} {
       allow read: if isStaff();
-      allow create, update: if isAdmin();
-      allow delete: if false;
+      allow create, update, delete: if isAdmin();
     }
   }
 }
@@ -218,8 +217,8 @@ service firebase.storage {
 
 1. **Público (clientes)**: pode ler o cardápio, mas não pode escrever
 2. **Operador**: pode ler tudo e escrever no cardápio
-3. **Admin**: pode ler tudo, escrever no cardápio E gerenciar usuários
-4. **Ninguém pode excluir documentos da coleção `users`** pelo client — usa-se o campo `active: false` para "desativar" um usuário
+3. **Admin**: pode ler tudo, escrever no cardápio E gerenciar usuários (criar, desativar, excluir)
+4. **Exclusão de usuários**: apenas admin pode excluir definitivamente o perfil (`delete`). Ao excluir, o usuário perde o acesso ao painel na próxima tentativa de login. A conta no Authentication permanece, mas sem perfil no Firestore o login é recusado.
 
 ---
 
@@ -398,6 +397,7 @@ Acesse `http://localhost:3000/admin.html`
 - ✅ Aba Usuários visível apenas para admin
 - ✅ Pode criar novo usuário
 - ✅ Pode desativar/reativar usuário
+- ✅ Pode excluir usuário (exceto a si mesmo e o último admin)
 
 ### 9.4 Testar o offline
 
@@ -429,6 +429,17 @@ Sempre que precisar ajustar as regras do Firestore:
 
 Usuários com `active: false` no Firestore não conseguem fazer login. Para reativar:
 - Pelo painel admin em admin.html (aba Usuários → Reativar)
+
+### Excluir usuários definitivamente
+
+Para remover definitivamente um usuário do sistema (o perfil na coleção `users` é apagado):
+- Pelo painel admin em admin.html (aba Usuários → Excluir)
+
+Regras:
+- O admin **não pode excluir a si mesmo**
+- O admin **não pode excluir o último administrador ativo**
+- Após a exclusão, o usuário perde o acesso: ao tentar logar, o `authService.init()` detecta a ausência do perfil e encerra a sessão
+- A conta no Authentication permanece (exclusão de conta Auth exige Admin SDK/server-side)
 
 ### Migrar para Firebase Hosting (opcional)
 
@@ -517,7 +528,8 @@ Quando um item é excluído ou sua imagem é substituída, a imagem anterior é 
 | "The query requires an index" | Falta índice no Firestore | Clique no link da mensagem de erro para criar automaticamente |
 | Cardápio vazio (sem itens) | Migração não executada | Execute `migrate-to-firestore.html` (Etapa 7) |
 | `db is not defined` | `firebase.js` não carregado | Verifique se `firebase.js` está na pasta `js/` e se os scripts estão na ordem correta |
-| Usuário logado não consegue acessar admin | Perfil não existe no Firestore | Crie o documento do usuário na coleção `users` (Etapa 8) |
+| Usuário logado não consegue acessar admin | Perfil não existe no Firestore | Crie o documento do usuário na coleção `users` (Etapa 8) ou, se foi excluído pelo admin, recrie o usuário |
+| Usuário excluído consegue logar na página pública | O perfil foi removido do Firestore | O acesso ao painel é negado via `authService.init()`; a conta Auth permanece (exclusão completa exige Admin SDK) |
 | "This account has been deactivated" | Usuário com `active: false` | Reative pelo painel admin ou diretamente no Firestore |
 | "Firebase Storage: Object not found" | Imagem já foi deletada do Storage | Ignore (limpeza automática ao substituir imagem) |
 | Upload falha | Arquivo > 5MB ou formato não suportado | Verifique tamanho e formato (JPG, PNG, WebP, GIF) |

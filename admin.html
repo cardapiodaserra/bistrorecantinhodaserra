@@ -15,9 +15,11 @@
     <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-storage-compat.js"></script>
     <script src="js/firebase.js"></script>
     <script src="js/menu-service.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/storage-service.js"></script>
 
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
@@ -403,9 +405,30 @@
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-brand-dark mb-2">Imagem</label>
-                        <input type="text" x-model="itemForm.image"
-                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors"
-                               placeholder="assets/img/Prato.jpeg (opcional)">
+                        <div class="space-y-3">
+                            <template x-if="itemForm.imagePreview || (itemForm.image && !itemForm.imageFile)">
+                                <div class="relative w-32 h-32 rounded-lg overflow-hidden border-2 border-gray-200">
+                                    <img x-bind:src="itemForm.imagePreview || itemForm.image" alt="Preview"
+                                         class="w-full h-full object-cover">
+                                </div>
+                            </template>
+                            <input type="file" accept="image/*" @change="handleImageSelect($event)"
+                                   class="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-brand-primary file:text-white hover:file:bg-brand-maroon cursor-pointer">
+                            <template x-if="itemForm.uploading">
+                                <div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-brand-primary h-2.5 rounded-full transition-all duration-300"
+                                             x-bind:style="'width: ' + itemForm.uploadProgress + '%'"></div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1 text-right" x-text="itemForm.uploadProgress + '%'"></p>
+                                </div>
+                            </template>
+                            <button type="button" @click="removeImage()"
+                                    x-show="itemForm.imageFile || itemForm.imagePreview || itemForm.image"
+                                    class="text-sm text-red-600 hover:text-red-800 transition-colors">
+                                Remover imagem
+                            </button>
+                        </div>
                     </div>
                     <div class="flex items-center gap-3">
                         <label class="flex items-center gap-3 cursor-pointer">
@@ -540,7 +563,9 @@
                 editingItemSectionId: null,
                 itemForm: {
                     name: '', description: '', price: '', noPrice: false,
-                    image: '', available: true
+                    image: '', available: true,
+                    imageFile: null, imagePreview: null,
+                    uploading: false, uploadProgress: 0
                 },
 
                 users: [],
@@ -696,7 +721,9 @@
                     this.editingItemIndex = null;
                     this.itemForm = {
                         name: '', description: '', price: '',
-                        noPrice: false, image: '', available: true
+                        noPrice: false, image: '', available: true,
+                        imageFile: null, imagePreview: null,
+                        uploading: false, uploadProgress: 0
                     };
                     this.showItemModal = true;
                 },
@@ -716,36 +743,87 @@
                         price: item.price === '[Preço Vazio]' ? '' : item.price,
                         noPrice: item.price === '[Preço Vazio]',
                         image: item.image || '',
-                        available: item.available
+                        available: item.available,
+                        imageFile: null, imagePreview: null,
+                        uploading: false, uploadProgress: 0
                     };
                     this.showItemModal = true;
+                },
+
+                handleImageSelect(event) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+                    try {
+                        storageService.validateFile(file);
+                    } catch (err) {
+                        this.notify(err.message, 'error');
+                        event.target.value = '';
+                        return;
+                    }
+                    this.itemForm.imageFile = file;
+                    this.itemForm.imagePreview = URL.createObjectURL(file);
+                },
+
+                removeImage() {
+                    if (this.itemForm.imagePreview) {
+                        URL.revokeObjectURL(this.itemForm.imagePreview);
+                    }
+                    this.itemForm.imageFile = null;
+                    this.itemForm.imagePreview = null;
+                    this.itemForm.image = '';
                 },
 
                 async saveItemForm() {
                     const section = this.sections.find(s => s.id === this.editingItemSectionId);
                     if (!section) return;
 
-                    const items = [...section.items];
-                    const itemData = {
-                        name: this.itemForm.name,
-                        description: this.itemForm.description || null,
-                        price: this.itemForm.noPrice ? '[Preço Vazio]' : this.itemForm.price,
-                        image: this.itemForm.image || null,
-                        available: this.itemForm.available
-                    };
-
-                    if (this.editingItemIndex !== null) {
-                        items[this.editingItemIndex] = itemData;
-                    } else {
-                        items.push(itemData);
-                    }
+                    this.itemForm.uploading = true;
+                    this.itemForm.uploadProgress = 0;
 
                     try {
+                        let imageUrl = this.itemForm.image || null;
+
+                        if (this.itemForm.imageFile) {
+                            const { downloadURL } = await storageService.uploadItemImage(
+                                this.itemForm.imageFile,
+                                this.editingItemSectionId
+                            );
+                            const oldImage = this.editingItemIndex !== null
+                                ? section.items[this.editingItemIndex].image
+                                : null;
+                            if (oldImage && storageService.isFirebaseStorageUrl(oldImage)) {
+                                await storageService.deleteImage(oldImage);
+                            }
+                            imageUrl = downloadURL;
+                        } else if (!this.itemForm.image && this.editingItemIndex !== null) {
+                            const oldImage = section.items[this.editingItemIndex].image;
+                            if (oldImage && storageService.isFirebaseStorageUrl(oldImage)) {
+                                await storageService.deleteImage(oldImage);
+                            }
+                        }
+
+                        const items = [...section.items];
+                        const itemData = {
+                            name: this.itemForm.name,
+                            description: this.itemForm.description || null,
+                            price: this.itemForm.noPrice ? '[Preço Vazio]' : this.itemForm.price,
+                            image: imageUrl,
+                            available: this.itemForm.available
+                        };
+
+                        if (this.editingItemIndex !== null) {
+                            items[this.editingItemIndex] = itemData;
+                        } else {
+                            items.push(itemData);
+                        }
+
                         await menuService.updateSectionItems(this.editingItemSectionId, items);
                         this.showItemModal = false;
+                        this.itemForm.uploading = false;
                         await this.loadSections();
                     } catch (err) {
                         console.error('Error saving item:', err);
+                        this.itemForm.uploading = false;
                         this.notify('Erro ao salvar item.', 'error');
                     }
                 },
@@ -786,6 +864,10 @@
                         } else if (this.deleteAction.type === 'item') {
                             const section = this.sections.find(s => s.id === this.deleteAction.sectionId);
                             if (section) {
+                                const item = section.items[this.deleteAction.itemIdx];
+                                if (item && item.image && storageService.isFirebaseStorageUrl(item.image)) {
+                                    await storageService.deleteImage(item.image);
+                                }
                                 const items = [...section.items];
                                 items.splice(this.deleteAction.itemIdx, 1);
                                 await menuService.updateSectionItems(this.deleteAction.sectionId, items);

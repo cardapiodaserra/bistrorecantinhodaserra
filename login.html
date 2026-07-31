@@ -127,11 +127,13 @@
                 submitting: false,
 
                 init() {
+                    authService.init();
                     auth.onAuthStateChanged((user) => {
                         if (user) {
                             window.location.href = 'admin.html';
                         } else {
                             this.loading = false;
+                            this.error = authService.state.error;
                         }
                     });
                 },

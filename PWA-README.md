@@ -83,6 +83,8 @@ O Service Worker armazena em cache (network-first):
 - Logo
 - CDNs (Alpine.js, Google Fonts, Firebase SDK)
 
+> Incluindo `firebase-storage-compat.js` a partir da v5.
+
 Os dados do cardápio são servidos offline via **Firestore offline persistence** (IndexedDB), substituindo o antigo `data.json` no cache do SW.
 
 ## Atualizações Futuras

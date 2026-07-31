@@ -27,6 +27,7 @@ Config lives in `js/firebase.js` — project `bistrorecantinhodaserra-730b4`.
 Services in use:
 - **Auth**: Email/password via `js/auth.js` (`authService` object)
 - **Firestore**: Collection `menu` (sections with `items[]`), collection `users` (profiles with `role: "admin"|"operator"`)
+- **Storage**: Item images via `js/storage-service.js` (`storageService` object) — path: `menu-items/{sectionId}/{timestamp}.ext`
 
 ## Data model
 
@@ -79,6 +80,7 @@ Update `numeroWhatsApp` in `js/app.js` (`558381157571`). International format wi
 | `js/firebase.js` | Firebase init with `enablePersistence()` |
 | `js/auth.js` | `authService`: login, logout, create/deactivate/list users |
 | `js/menu-service.js` | `menuService`: `fetchSections`, `saveSection`, `deleteSection` |
+| `js/storage-service.js` | `storageService`: `uploadItemImage`, `deleteImage` |
 | `js/app.js` | Public menu Alpine component |
 | `login.html` | Login form, Alpine `loginApp()` |
 | `admin.html` | Admin dashboard, Alpine `adminApp()` |

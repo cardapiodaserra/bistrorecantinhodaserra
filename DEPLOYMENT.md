@@ -55,6 +55,17 @@ Antes do deploy, o Firebase deve estar configurado e os dados migrados:
 | Login | `/bistrorecantinhodaserra/login.html` | Login de admin/operador |
 | Admin | `/bistrorecantinhodaserra/admin.html` | Painel de gestão do cardápio |
 
+## Firebase Storage
+
+O projeto usa Firebase Storage para armazenar imagens dos itens do cardápio enviadas pelo painel admin.
+
+**Pré-requisitos de Storage antes do deploy:**
+1. Ative o **Cloud Storage** no Console Firebase
+2. Publique as regras de segurança (leitura pública, escrita autenticada)
+3. Confirme que `storageBucket` em `js/firebase.js` está correto
+
+> Veja [README-FIREBASE.md](README-FIREBASE.md) seção 12 para instruções detalhadas.
+
 ## Como Fazer Deploy
 
 ### GitHub Pages

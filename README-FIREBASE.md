@@ -1,5 +1,22 @@
 # Integração Firebase — Bistrô Recantinho da Serra
 
+> ## 🔴 Status: BACKEND LEGADO (rollback)
+>
+> Este documento descreve a integração **Firebase**, que atualmente **não é o
+> backend ativo** do projeto. O backend principal é o **Supabase**
+> (ver [README.md](README.md)).
+>
+> A integração Firebase foi **preservada intacta** no código
+> (`js/firebase.js`, `js/auth.js`, `js/menu-service.js`, `js/storage-service.js`)
+> para **rollback futuro**. Os serviços expõem a mesma API pública
+> (`authService`, `menuService`, `storageService`) na versão Firebase e na
+> Supabase. Para reativar o Firebase, basta trocar os `<script>` nos HTMLs
+> (da versão `js/supabase/*` de volta para a gstatic + `js/firebase.js`).
+>
+> **Só siga este guia se estiver fazendo rollback para o Firebase.**
+> Para setup do backend atual, veja o [README.md](README.md) e o
+> [DEPLOYMENT.md](DEPLOYMENT.md).
+
 Guia completo de configuração do Firebase para o cardápio digital.
 
 ---

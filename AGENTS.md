@@ -68,11 +68,20 @@ Os serviços expõem a **mesma API pública** (`authService`, `menuService`, `st
 3. Depois do 1º admin, `/setup.html` mostra "já configurado" e a função rejeita chamadas anônimas (401).
 4. A partir daí, apenas um admin autenticado cria novos usuários (painel `admin.html` → Usuários).
 
-**Ocultação do link de setup**: o `login.html` e o `setup.html` verificam via RPC `public.first_admin_pending()` (migration `00005`) se existe admin ativo. Quando já existe, o link "Primeiro acesso?" é **ocultado** no login e o `setup.html` mostra "Administrador já configurado". A RPC é `SECURITY DEFINER` porque `profiles` não é legível por anon (RLS), mas a RPC pode ser chamada sem autenticação.
-
-**Visibilidade do link de setup no login**: o `login.html` oculta o link "Primeiro acesso?" quando já existe admin, consultando a RPC `public.first_admin_pending()` (migration `00005`). A RPC é `SECURITY DEFINER` porque `profiles` não é legível por anon (RLS); o `setup.html` usa a mesma RPC para decidir se mostra o formulário.
+**Ocultação do link de setup**: o `login.html` oculta o link "Primeiro acesso?" quando já existe admin, consultando a RPC `public.first_admin_pending()` (migration `00005`). A RPC é `SECURITY DEFINER` porque `profiles` não é legível por anon (RLS), mas pode ser chamada sem autenticação; o `setup.html` usa a mesma RPC para decidir se mostra o formulário ou "Administrador já configurado".
 
 **Modelo de segurança**: exposição limitada à janela `deploy → 1º admin`. Se o dono configurar imediatamente após o deploy, a janela é de segundos. Para deploy com intervalo maior, considerar adicionar um `SETUP_KEY` (env var) ao branch de bootstrap.
+
+### Security Advisor (linter) — warnings aceitos (intencionais)
+
+A migration `00006_security_linter_fixes.sql` corrigiu os warnings do Security Advisor. Os **2 restantes são intencionais** e devem continuar:
+
+- `anon_security_definer_function_executable` em `first_admin_pending` — essencial para o bootstrap do 1º admin (anon chama a RPC em `setup.html`/`login.html`). Retorna apenas `BOOLEAN`, sem vazar dados.
+- `authenticated_security_definer_function_executable` em `is_admin` — `is_admin()` é usada pelas RLS policies de `profiles` (`profiles_read_own`, `profiles_admin_all`); sem `EXECUTE` para `authenticated` as policies quebram.
+
+**Não restaurar**: `handle_new_user` é função de trigger (não precisa de `EXECUTE`); `is_admin` não deve ser executável por `anon`; `first_admin_pending` não deve ser executável por `authenticated`.
+
+**Storage `menu-items`**: o bucket é público e a policy SELECT é restrita a `storage.allow_only_operation('object.delete')` — o Storage `remove()` faz SELECT interno antes de apagar, mas `allow_only_operation` bloqueia o listing (lint 0025). Ao editar, não dropar a policy SELECT nem remover o filtro de operação, senão o delete de imagens quebra.
 
 ### Primeiro admin / dados de teste (dev local)
 

@@ -198,7 +198,7 @@ Se por algum motivo o bucket não foi criado, configure manualmente:
    anon key do Cloud (passo 7)
 2. Atualize a versão do Service Worker em `sw.js`:
    ```js
-   const CACHE_NAME = 'bistro-recantinho-v6'; // incremente a versão
+   const CACHE_NAME = 'bistro-recantinho-v7'; // incremente a versão
    ```
 3. Commit e push para o repositório:
    ```bash
@@ -316,7 +316,7 @@ Para forçar atualização do cache após cada deploy, incremente a versão:
 
 ```js
 // sw.js
-const CACHE_NAME = 'bistro-recantinho-v6'; // incrementar a cada deploy
+const CACHE_NAME = 'bistro-recantinho-v7'; // incrementar a cada deploy
 ```
 
 ## Verificação Pós-Deploy

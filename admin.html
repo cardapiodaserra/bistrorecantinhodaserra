@@ -12,12 +12,11 @@
     <link rel="stylesheet" href="css/tailwind/output.css">
     <link rel="stylesheet" href="css/styles.css">
 
-    <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore-compat.js"></script>
-    <script src="js/firebase.js"></script>
-    <script src="js/menu-service.js"></script>
-    <script src="js/auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase/supabase-client.js"></script>
+    <script src="js/supabase/menu-service.js"></script>
+    <script src="js/supabase/auth.js"></script>
+    <script src="js/supabase/storage-service.js"></script>
 
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
@@ -38,7 +37,7 @@
         <div x-show="!pageLoading && isAuthenticated">
             <!-- Header -->
             <header class="bg-white shadow-sm">
-                <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+                <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <img src="assets/logo.PNG" alt="Logo" class="w-10 h-10 object-contain">
                         <div>
@@ -60,39 +59,39 @@
             </header>
 
             <!-- Dashboard Stats -->
-            <div class="max-w-7xl mx-auto px-4 pt-8">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mb-10">
+            <div class="max-w-7xl mx-auto px-4 pt-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mb-8">
                     <div class="bg-white rounded-xl px-5 py-5 shadow-sm">
                         <p class="text-xs text-gray-500 uppercase font-semibold">Seções</p>
-                        <p class="text-2xl font-bold text-brand-dark mt-1.5" x-text="sections.length"></p>
+                        <p class="text-2xl font-bold text-brand-dark mt-1" x-text="sections.length"></p>
                     </div>
                     <div class="bg-white rounded-xl px-5 py-5 shadow-sm">
                         <p class="text-xs text-gray-500 uppercase font-semibold">Itens</p>
-                        <p class="text-2xl font-bold text-brand-dark mt-1.5" x-text="totalItems"></p>
+                        <p class="text-2xl font-bold text-brand-dark mt-1" x-text="totalItems"></p>
                     </div>
                     <div class="bg-white rounded-xl px-5 py-5 shadow-sm">
                         <p class="text-xs text-gray-500 uppercase font-semibold">Disponíveis</p>
-                        <p class="text-2xl font-bold text-green-600 mt-1.5" x-text="availableItems"></p>
+                        <p class="text-2xl font-bold text-green-600 mt-1" x-text="availableItems"></p>
                     </div>
                     <div class="bg-white rounded-xl px-5 py-5 shadow-sm">
                         <p class="text-xs text-gray-500 uppercase font-semibold">Indisponíveis</p>
-                        <p class="text-2xl font-bold text-red-500 mt-1.5" x-text="unavailableItems"></p>
+                        <p class="text-2xl font-bold text-red-500 mt-1" x-text="unavailableItems"></p>
                     </div>
                 </div>
             </div>
 
             <!-- Tab Bar -->
-            <div class="bg-white border-b border-gray-200 mt-1">
+            <div class="bg-white border-b border-gray-200">
                 <div class="max-w-7xl mx-auto px-4">
                     <div class="flex gap-0">
                         <button @click="activeTab = 'menu'"
-                                class="px-8 py-4 text-sm font-semibold border-b-2 transition-colors"
+                                class="px-6 py-3 text-sm font-semibold border-b-2 transition-colors"
                                 :class="activeTab === 'menu' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-gray-500 hover:text-brand-dark'">
                             Cardápio
                         </button>
                         <button x-show="isAdmin"
                                 @click="activeTab = 'users'"
-                                class="px-8 py-4 text-sm font-semibold border-b-2 transition-colors"
+                                class="px-6 py-3 text-sm font-semibold border-b-2 transition-colors"
                                 :class="activeTab === 'users' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-gray-500 hover:text-brand-dark'">
                             Usuários
                         </button>
@@ -100,7 +99,7 @@
                 </div>
             </div>
 
-            <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="max-w-7xl mx-auto px-4 py-6">
                 <!-- TAB: Menu -->
                 <div x-show="activeTab === 'menu'">
                     <div class="flex items-center justify-between mb-8">
@@ -125,8 +124,8 @@
                     <div class="space-y-6">
                         <template x-for="(section, sIdx) in sections" :key="section.id">
                             <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
-                                <div class="p-5 flex items-center justify-between bg-gray-50 border-b border-gray-100">
-                                    <div class="flex items-center gap-4">
+                                <div class="p-4 flex items-center justify-between bg-gray-50 border-b border-gray-100">
+                                    <div class="flex items-center gap-3">
                                         <span class="text-sm text-gray-400 font-mono" x-text="section.order"></span>
                                         <h3 class="font-bold text-brand-dark" x-text="section.title"></h3>
                                         <span class="px-2 py-0.5 text-xs font-semibold rounded-full"
@@ -134,7 +133,7 @@
                                               x-text="section.type === 'food' ? 'Comida' : 'Bebida'"></span>
                                         <span class="text-xs text-gray-400" x-text="section.items.length + ' itens'"></span>
                                     </div>
-                                    <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-2">
                                         <button @click="moveSection(sIdx, -1)" x-show="sIdx > 0"
                                                 class="p-1.5 text-gray-400 hover:text-brand-dark transition-colors" title="Subir">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -163,8 +162,8 @@
                                 </div>
 
                                 <!-- Items -->
-                                <div class="p-5 pt-4">
-                                    <div class="space-y-4">
+                                <div class="p-5">
+                                    <div class="space-y-3">
                                         <template x-for="(item, iIdx) in section.items" :key="iIdx">
                                             <div class="flex items-center justify-between p-4 rounded-xl hover:bg-gray-50 transition-colors border border-gray-100">
                                                 <div class="flex items-center gap-3 flex-1 min-w-0">
@@ -231,12 +230,12 @@
                             <table class="w-full">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="text-left px-5 py-4 text-xs font-semibold text-gray-500 uppercase">Email</th>
-                                        <th class="text-left px-5 py-4 text-xs font-semibold text-gray-500 uppercase">Nome</th>
-                                        <th class="text-left px-5 py-4 text-xs font-semibold text-gray-500 uppercase">Tipo</th>
-                                        <th class="text-left px-5 py-4 text-xs font-semibold text-gray-500 uppercase">Status</th>
-                                        <th class="text-left px-5 py-4 text-xs font-semibold text-gray-500 uppercase">Criado em</th>
-                                        <th class="text-right px-5 py-4 text-xs font-semibold text-gray-500 uppercase">Ações</th>
+                                        <th class="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Email</th>
+                                        <th class="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Nome</th>
+                                        <th class="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Tipo</th>
+                                        <th class="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Status</th>
+                                        <th class="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Criado em</th>
+                                        <th class="text-right px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
@@ -256,16 +255,23 @@
                                             </td>
                                             <td class="px-4 py-3 text-sm text-gray-500" x-text="formatDate(user.createdAt)"></td>
                                             <td class="px-4 py-3 text-right">
-                                                <button x-show="user.active !== false"
-                                                        @click="deactivateUser(user.uid)"
-                                                        class="px-3 py-1 text-xs font-semibold text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
-                                                    Desativar
-                                                </button>
-                                                <button x-show="user.active === false"
-                                                        @click="reactivateUser(user.uid)"
-                                                        class="px-3 py-1 text-xs font-semibold text-green-600 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
-                                                    Reativar
-                                                </button>
+                                                <div class="flex items-center justify-end gap-2">
+                                                    <button x-show="user.active !== false"
+                                                            @click="deactivateUser(user.uid)"
+                                                            class="px-3 py-1 text-xs font-semibold text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+                                                        Desativar
+                                                    </button>
+                                                    <button x-show="user.active === false"
+                                                            @click="reactivateUser(user.uid)"
+                                                            class="px-3 py-1 text-xs font-semibold text-green-600 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                                                        Reativar
+                                                    </button>
+                                                    <button x-show="user.uid !== currentUserUid"
+                                                            @click="confirmDeleteUser(user)"
+                                                            class="px-3 py-1 text-xs font-semibold text-gray-600 bg-gray-100 rounded-lg hover:bg-red-600 hover:text-white transition-colors">
+                                                        Excluir
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     </template>
@@ -334,12 +340,12 @@
             <div x-show="showSectionModal" x-transition:enter="transition ease-out duration-200"
                  x-transition:enter-start="scale-95 opacity-0" x-transition:enter-end="scale-100 opacity-100"
                  class="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
-                 <div class="px-6 py-5 border-b border-gray-200 bg-brand-primary text-white">
+                <div class="p-4 border-b border-gray-200 bg-brand-primary text-white">
                     <h3 class="text-lg font-bold" x-text="editingSection ? 'Editar Seção' : 'Nova Seção'"></h3>
                 </div>
-                <form @submit.prevent="saveSectionForm()" class="px-6 py-6 space-y-5">
+                <form @submit.prevent="saveSectionForm()" class="p-6 space-y-4">
                     <div>
-                        <label class="block text-sm font-semibold text-brand-dark mb-2.5">Título</label>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2">Título</label>
                         <input type="text" x-model="sectionForm.title" required
                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors"
                                placeholder="Ex: Entradas">
@@ -403,9 +409,37 @@
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-brand-dark mb-2">Imagem</label>
-                        <input type="text" x-model="itemForm.image"
-                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-brand-dark focus:outline-none focus:border-brand-primary transition-colors"
-                               placeholder="assets/img/Prato.jpeg (opcional)">
+                        <div class="space-y-3">
+                            <template x-if="itemForm.imagePreview || (itemForm.image && !itemForm.imageFile)">
+                                <div class="relative w-32 h-32 rounded-lg overflow-hidden border-2 border-gray-200">
+                                    <img x-bind:src="itemForm.imagePreview || itemForm.image" alt="Preview"
+                                         class="w-full h-full object-cover">
+                                </div>
+                            </template>
+                            <label class="flex flex-col items-center justify-center gap-2 w-full py-6 px-4 border-2 border-dashed border-[#8B3A3A]/40 rounded-lg bg-[#E8DCC8]/40 text-center cursor-pointer transition-colors hover:border-[#8B3A3A] hover:bg-[#E8DCC8]">
+                                <input type="file" accept="image/*" @change="handleImageSelect($event)"
+                                       class="sr-only">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
+                                </svg>
+                                <span class="text-sm font-semibold text-brand-primary">Selecionar imagem</span>
+                                <span class="text-xs text-gray-500">JPG, PNG, WebP ou GIF · máx. 5MB</span>
+                            </label>
+                            <template x-if="itemForm.uploading">
+                                <div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-brand-primary h-2.5 rounded-full transition-all duration-300"
+                                             x-bind:style="'width: ' + itemForm.uploadProgress + '%'"></div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1 text-right" x-text="itemForm.uploadProgress + '%'"></p>
+                                </div>
+                            </template>
+                            <button type="button" @click="removeImage()"
+                                    x-show="itemForm.imageFile || itemForm.imagePreview || itemForm.image"
+                                    class="text-sm text-red-600 hover:text-red-800 transition-colors">
+                                Remover imagem
+                            </button>
+                        </div>
                     </div>
                     <div class="flex items-center gap-3">
                         <label class="flex items-center gap-3 cursor-pointer">
@@ -525,6 +559,7 @@
                 isAdmin: false,
                 authChecked: false,
                 currentUserEmail: '',
+                currentUserUid: '',
 
                 activeTab: 'menu',
 
@@ -540,7 +575,9 @@
                 editingItemSectionId: null,
                 itemForm: {
                     name: '', description: '', price: '', noPrice: false,
-                    image: '', available: true
+                    image: '', available: true,
+                    imageFile: null, imagePreview: null,
+                    uploading: false, uploadProgress: 0
                 },
 
                 users: [],
@@ -589,6 +626,7 @@
                     this.isAuthenticated = true;
                     this.authChecked = true;
                     this.currentUserEmail = authService.state.user.email;
+                    this.currentUserUid = authService.state.user.uid;
                     this.isAdmin = authService.state.userProfile?.role === 'admin';
 
                     if (authService.state.userProfile?.active === false) {
@@ -696,7 +734,9 @@
                     this.editingItemIndex = null;
                     this.itemForm = {
                         name: '', description: '', price: '',
-                        noPrice: false, image: '', available: true
+                        noPrice: false, image: '', available: true,
+                        imageFile: null, imagePreview: null,
+                        uploading: false, uploadProgress: 0
                     };
                     this.showItemModal = true;
                 },
@@ -716,36 +756,87 @@
                         price: item.price === '[Preço Vazio]' ? '' : item.price,
                         noPrice: item.price === '[Preço Vazio]',
                         image: item.image || '',
-                        available: item.available
+                        available: item.available,
+                        imageFile: null, imagePreview: null,
+                        uploading: false, uploadProgress: 0
                     };
                     this.showItemModal = true;
+                },
+
+                handleImageSelect(event) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+                    try {
+                        storageService.validateFile(file);
+                    } catch (err) {
+                        this.notify(err.message, 'error');
+                        event.target.value = '';
+                        return;
+                    }
+                    this.itemForm.imageFile = file;
+                    this.itemForm.imagePreview = URL.createObjectURL(file);
+                },
+
+                removeImage() {
+                    if (this.itemForm.imagePreview) {
+                        URL.revokeObjectURL(this.itemForm.imagePreview);
+                    }
+                    this.itemForm.imageFile = null;
+                    this.itemForm.imagePreview = null;
+                    this.itemForm.image = '';
                 },
 
                 async saveItemForm() {
                     const section = this.sections.find(s => s.id === this.editingItemSectionId);
                     if (!section) return;
 
-                    const items = [...section.items];
-                    const itemData = {
-                        name: this.itemForm.name,
-                        description: this.itemForm.description || null,
-                        price: this.itemForm.noPrice ? '[Preço Vazio]' : this.itemForm.price,
-                        image: this.itemForm.image || null,
-                        available: this.itemForm.available
-                    };
-
-                    if (this.editingItemIndex !== null) {
-                        items[this.editingItemIndex] = itemData;
-                    } else {
-                        items.push(itemData);
-                    }
+                    this.itemForm.uploading = true;
+                    this.itemForm.uploadProgress = 0;
 
                     try {
+                        let imageUrl = this.itemForm.image || null;
+
+                        if (this.itemForm.imageFile) {
+                            const { downloadURL } = await storageService.uploadItemImage(
+                                this.itemForm.imageFile,
+                                this.editingItemSectionId
+                            );
+                            const oldImage = this.editingItemIndex !== null
+                                ? section.items[this.editingItemIndex].image
+                                : null;
+                            if (oldImage && storageService.isFirebaseStorageUrl(oldImage)) {
+                                await storageService.deleteImage(oldImage);
+                            }
+                            imageUrl = downloadURL;
+                        } else if (!this.itemForm.image && this.editingItemIndex !== null) {
+                            const oldImage = section.items[this.editingItemIndex].image;
+                            if (oldImage && storageService.isFirebaseStorageUrl(oldImage)) {
+                                await storageService.deleteImage(oldImage);
+                            }
+                        }
+
+                        const items = [...section.items];
+                        const itemData = {
+                            name: this.itemForm.name,
+                            description: this.itemForm.description || null,
+                            price: this.itemForm.noPrice ? '[Preço Vazio]' : this.itemForm.price,
+                            image: imageUrl,
+                            available: this.itemForm.available
+                        };
+
+                        if (this.editingItemIndex !== null) {
+                            items[this.editingItemIndex] = itemData;
+                        } else {
+                            items.push(itemData);
+                        }
+
                         await menuService.updateSectionItems(this.editingItemSectionId, items);
                         this.showItemModal = false;
+                        this.itemForm.uploading = false;
                         await this.loadSections();
                     } catch (err) {
                         console.error('Error saving item:', err);
+                        this.itemForm.uploading = false;
                         this.notify('Erro ao salvar item.', 'error');
                     }
                 },
@@ -786,10 +877,17 @@
                         } else if (this.deleteAction.type === 'item') {
                             const section = this.sections.find(s => s.id === this.deleteAction.sectionId);
                             if (section) {
+                                const item = section.items[this.deleteAction.itemIdx];
+                                if (item && item.image && storageService.isFirebaseStorageUrl(item.image)) {
+                                    await storageService.deleteImage(item.image);
+                                }
                                 const items = [...section.items];
                                 items.splice(this.deleteAction.itemIdx, 1);
                                 await menuService.updateSectionItems(this.deleteAction.sectionId, items);
                             }
+                        } else if (this.deleteAction.type === 'user') {
+                            await authService.deleteUser(this.deleteAction.uid);
+                            await this.loadUsers();
                         }
                         this.showDeleteModal = false;
                         this.deleteAction = null;
@@ -854,6 +952,25 @@
                     } catch (err) {
                         this.notify('Erro ao reativar usuário.', 'error');
                     }
+                },
+
+                confirmDeleteUser(user) {
+                    if (user.uid === this.currentUserUid) {
+                        this.notify('Você não pode excluir a si mesmo.', 'error');
+                        return;
+                    }
+                    if (user.role === 'admin' && this.isLastAdmin(user)) {
+                        this.notify('Não é possível excluir o único administrador.', 'error');
+                        return;
+                    }
+                    this.deleteAction = { type: 'user', uid: user.uid };
+                    this.deleteMessage = `Excluir o usuário "${user.displayName || user.email}"?`;
+                    this.showDeleteModal = true;
+                },
+
+                isLastAdmin(uid) {
+                    const admins = this.users.filter(u => u.role === 'admin' && u.active !== false);
+                    return admins.length === 1 && admins[0].uid === uid;
                 },
 
                 notify(message, type = 'info') {

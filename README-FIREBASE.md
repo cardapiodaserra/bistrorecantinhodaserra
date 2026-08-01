@@ -1,5 +1,22 @@
 # Integração Firebase — Bistrô Recantinho da Serra
 
+> ## 🔴 Status: BACKEND LEGADO (rollback)
+>
+> Este documento descreve a integração **Firebase**, que atualmente **não é o
+> backend ativo** do projeto. O backend principal é o **Supabase**
+> (ver [README.md](README.md)).
+>
+> A integração Firebase foi **preservada intacta** no código
+> (`js/firebase.js`, `js/auth.js`, `js/menu-service.js`, `js/storage-service.js`)
+> para **rollback futuro**. Os serviços expõem a mesma API pública
+> (`authService`, `menuService`, `storageService`) na versão Firebase e na
+> Supabase. Para reativar o Firebase, basta trocar os `<script>` nos HTMLs
+> (da versão `js/supabase/*` de volta para a gstatic + `js/firebase.js`).
+>
+> **Só siga este guia se estiver fazendo rollback para o Firebase.**
+> Para setup do backend atual, veja o [README.md](README.md) e o
+> [DEPLOYMENT.md](DEPLOYMENT.md).
+
 Guia completo de configuração do Firebase para o cardápio digital.
 
 ---
@@ -73,7 +90,7 @@ Cada campo significa:
 **não é secreta**, é segura para incluir no client) |
 | `authDomain` | `{projectId}.firebaseapp.com` | Domínio de autenticação |
 | `projectId` | ID do seu projeto Firebase | Identificador único do projeto |
-| `storageBucket` | `{projectId}.appspot.com` | Bucket de armazenamento (não usado, mas obrigatório) |
+| `storageBucket` | `{projectId}.appspot.com` | Bucket de armazenamento de imagens dos itens do cardápio |
 | `messagingSenderId` | Gerado automaticamente | ID do remetente de notificações (não usado, mas obrigatório) |
 | `appId` | Gerado automaticamente | ID único do seu app web |
 
@@ -180,22 +197,45 @@ service cloud.firestore {
     // Usuários (coleção "users"):
     //   - leitura: qualquer staff (admin ou operador)
     //   - escrita: apenas admin
-    //   - delete: NUNCA pelo client (usamos soft-delete: active: false)
+    //   - delete: apenas admin (exclusão definitiva do perfil)
     match /users/{userId} {
       allow read: if isStaff();
-      allow create, update: if isAdmin();
-      allow delete: if false;
+      allow create, update, delete: if isAdmin();
     }
   }
 }
 ```
 
-### Como funcionam as regras:
+### Regras de segurança do Firebase Storage
+
+Além do Firestore, o **Cloud Storage** também precisa de regras de segurança para proteger as imagens dos itens do cardápio.
+
+No Console Firebase, vá em **Storage** → **Rules** e publique:
+
+```javascript
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Imagens dos itens: leitura pública, escrita apenas autenticado
+    match /menu-items/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}
+```
+
+### Como funcionam as regras do Storage:
+
+1. **Público (clientes)**: pode ler (baixar) imagens — necessário para exibir no cardápio público
+2. **Staff autenticado (admin/operador)**: pode fazer upload e deletar imagens
+
+### 5.1 Como funcionam as regras:
 
 1. **Público (clientes)**: pode ler o cardápio, mas não pode escrever
 2. **Operador**: pode ler tudo e escrever no cardápio
-3. **Admin**: pode ler tudo, escrever no cardápio E gerenciar usuários
-4. **Ninguém pode excluir documentos da coleção `users`** pelo client — usa-se o campo `active: false` para "desativar" um usuário
+3. **Admin**: pode ler tudo, escrever no cardápio E gerenciar usuários (criar, desativar, excluir)
+4. **Exclusão de usuários**: apenas admin pode excluir definitivamente o perfil (`delete`). Ao excluir, o usuário perde o acesso ao painel na próxima tentativa de login. A conta no Authentication permanece, mas sem perfil no Firestore o login é recusado.
 
 ---
 
@@ -237,7 +277,8 @@ const firebaseConfig = {
 
 - **Variáveis de ambiente (.env)**: Não usamos — o Firebase SDK para web é configurado diretamente no código
 - **Firebase CLI**: Não necessário para este projeto (caso use no futuro, instale com `npm install -g firebase-tools`)
-- **Node.js no servidor**: Toda a integração é client-side
+- **Firebase Admin SDK**: Não necessário (toda a integração é client-side)
+- **Firebase Storage SDK**: Carregado via CDN em `admin.html` (`firebase-storage-compat.js`)
 
 ---
 
@@ -373,6 +414,7 @@ Acesse `http://localhost:3000/admin.html`
 - ✅ Aba Usuários visível apenas para admin
 - ✅ Pode criar novo usuário
 - ✅ Pode desativar/reativar usuário
+- ✅ Pode excluir usuário (exceto a si mesmo e o último admin)
 
 ### 9.4 Testar o offline
 
@@ -405,6 +447,17 @@ Sempre que precisar ajustar as regras do Firestore:
 Usuários com `active: false` no Firestore não conseguem fazer login. Para reativar:
 - Pelo painel admin em admin.html (aba Usuários → Reativar)
 
+### Excluir usuários definitivamente
+
+Para remover definitivamente um usuário do sistema (o perfil na coleção `users` é apagado):
+- Pelo painel admin em admin.html (aba Usuários → Excluir)
+
+Regras:
+- O admin **não pode excluir a si mesmo**
+- O admin **não pode excluir o último administrador ativo**
+- Após a exclusão, o usuário perde o acesso: ao tentar logar, o `authService.init()` detecta a ausência do perfil e encerra a sessão
+- A conta no Authentication permanece (exclusão de conta Auth exige Admin SDK/server-side)
+
 ### Migrar para Firebase Hosting (opcional)
 
 Se quiser migrar do GitHub Pages para Firebase Hosting no futuro:
@@ -426,6 +479,8 @@ Isso daria deploy automático e melhor integração com os outros serviços Fire
 |-------------|------|
 | Firebase Web Setup | https://firebase.google.com/docs/web/setup |
 | Firebase Auth (Email/Senha) | https://firebase.google.com/docs/auth/web/password-auth |
+| Firebase Storage (Web) | https://firebase.google.com/docs/storage/web/start |
+| Storage Security Rules | https://firebase.google.com/docs/storage/security |
 | Firestore Security Rules | https://firebase.google.com/docs/firestore/security/overview |
 | Firestore Role-based Access | https://firebase.google.com/docs/firestore/solutions/role-based-access |
 | Firestore Offline Persistence | https://firebase.google.com/docs/firestore/manage-data/enable-offline |
@@ -433,6 +488,53 @@ Isso daria deploy automático e melhor integração com os outros serviços Fire
 | Firebase Auth REST API | https://firebase.google.com/docs/reference/rest/auth |
 | Firebase Console | https://console.firebase.google.com |
 | CDN Firebase SDK (última versão) | https://www.gstatic.com/firebasejs/releases.json |
+
+---
+
+## 12. Configurar Firebase Storage
+
+O Cloud Storage para Firebase armazena as imagens enviadas do painel admin para os itens do cardápio.
+
+### 12.1 Ativar o Storage
+
+1. No Console Firebase, vá em **Storage** (ou **Databases & Storage → Storage**)
+2. Clique em **Começar** (Get Started)
+3. Selecione as regras de segurança padrão (vamos ajustar depois)
+4. Escolha a região: **southamerica-east1** (São Paulo) ou a mesma usada no Firestore
+5. Clique em **Concluir**
+
+### 12.2 Publicar as regras de segurança
+
+Conforme detalhado na [Etapa 5 - Regras de segurança do Storage](#regras-de-segurança-do-firebase-storage), publique as regras no console.
+
+### 12.3 Estrutura de pastas
+
+As imagens dos itens são organizadas no Storage com a seguinte estrutura:
+
+```
+menu-items/{sectionId}/{timestamp}_{nome_original.ext}
+```
+
+**Exemplo:**
+```
+menu-items/prato-principal/1720123456789_parmegiana.jpg
+```
+
+### 12.4 Upload pelo painel admin
+
+O processo é automático:
+
+1. No admin, ao criar/editar um item, clique em **Escolher arquivo**
+2. Selecione uma imagem (JPG, PNG, WebP ou GIF, até 5MB)
+3. Um preview será exibido
+4. Ao salvar, o upload é feito automaticamente e a URL gerada é salva no Firestore
+5. Uma barra de progresso mostra o andamento
+
+### 12.5 Exclusão de imagens
+
+Quando um item é excluído ou sua imagem é substituída, a imagem anterior é automaticamente removida do Storage (se for uma URL do Firebase Storage).
+
+---
 
 ### Troubleshooting
 
@@ -443,8 +545,12 @@ Isso daria deploy automático e melhor integração com os outros serviços Fire
 | "The query requires an index" | Falta índice no Firestore | Clique no link da mensagem de erro para criar automaticamente |
 | Cardápio vazio (sem itens) | Migração não executada | Execute `migrate-to-firestore.html` (Etapa 7) |
 | `db is not defined` | `firebase.js` não carregado | Verifique se `firebase.js` está na pasta `js/` e se os scripts estão na ordem correta |
-| Usuário logado não consegue acessar admin | Perfil não existe no Firestore | Crie o documento do usuário na coleção `users` (Etapa 8) |
+| Usuário logado não consegue acessar admin | Perfil não existe no Firestore | Crie o documento do usuário na coleção `users` (Etapa 8) ou, se foi excluído pelo admin, recrie o usuário |
+| Usuário excluído consegue logar na página pública | O perfil foi removido do Firestore | O acesso ao painel é negado via `authService.init()`; a conta Auth permanece (exclusão completa exige Admin SDK) |
 | "This account has been deactivated" | Usuário com `active: false` | Reative pelo painel admin ou diretamente no Firestore |
+| "Firebase Storage: Object not found" | Imagem já foi deletada do Storage | Ignore (limpeza automática ao substituir imagem) |
+| Upload falha | Arquivo > 5MB ou formato não suportado | Verifique tamanho e formato (JPG, PNG, WebP, GIF) |
+| Imagem não aparece no cardápio | URL não é pública ou foi deletada | Refaça o upload da imagem pelo painel admin |
 
 ---
 

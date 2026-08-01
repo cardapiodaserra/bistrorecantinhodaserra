@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuração Inicial - Bistrô Recantinho da Serra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/logo.PNG">
+    <link rel="stylesheet" href="css/tailwind/output.css">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase/supabase-client.js"></script>
+
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-gradient-to-br from-brand-beige to-brand-cream min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md" x-data="setupApp()">
+
+        <!-- Loading -->
+        <div x-show="loading" class="text-center py-12">
+            <div class="animate-logo-float mb-6">
+                <div class="relative inline-block">
+                    <div class="absolute inset-0 bg-brand-primary opacity-10 rounded-full animate-ping w-24 h-24 mx-auto"></div>
+                    <img src="assets/logo.PNG" alt="Logo" class="w-24 h-24 mx-auto object-contain relative z-10 drop-shadow-lg">
+                </div>
+            </div>
+            <p class="text-brand-dark font-medium">Verificando configuração...</p>
+        </div>
+
+        <!-- Card de Configuração -->
+        <div x-show="!loading" x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 translate-y-4"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             class="bg-white rounded-3xl shadow-xl overflow-hidden">
+
+            <!-- Header decorativo -->
+            <div class="bg-brand-primary px-8 py-10 text-center relative overflow-hidden">
+                <div class="absolute inset-0 opacity-5">
+                    <div class="absolute -top-10 -right-10 w-40 h-40 bg-white rounded-full"></div>
+                    <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-white rounded-full"></div>
+                </div>
+                <img src="assets/logo.PNG" alt="Logo" class="w-20 h-20 mx-auto object-contain mb-4 relative z-10">
+                <h1 class="text-2xl font-bold text-white relative z-10">Configuração Inicial</h1>
+                <p class="text-brand-cream text-sm mt-1 relative z-10">Crie o administrador do sistema</p>
+            </div>
+
+            <div class="p-8">
+                <!-- Já configurado -->
+                <div x-show="alreadyConfigured" x-transition class="text-center py-4">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-lg font-bold text-brand-dark mb-2">Administrador já configurado</h2>
+                    <p class="text-sm text-gray-600 mb-6">Este sistema já possui um administrador. Entre com sua conta para acessar o painel.</p>
+                    <a href="login.html"
+                       class="inline-block px-6 py-3 bg-brand-primary text-white font-semibold rounded-lg hover:bg-brand-maroon transition-colors">
+                        Ir para Login
+                    </a>
+                </div>
+
+                <!-- Formulário -->
+                <div x-show="!alreadyConfigured">
+                    <div x-show="error" x-transition
+                         class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg">
+                        <p class="text-sm text-red-700" x-text="error"></p>
+                    </div>
+
+                    <div x-show="success" x-transition
+                         class="bg-green-50 border-l-4 border-green-500 p-4 mb-6 rounded-lg">
+                        <p class="text-sm text-green-800" x-text="successMessage"></p>
+                    </div>
+
+                    <form x-show="!success" @submit.prevent="handleSetup()" class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-semibold text-brand-dark mb-2">Nome</label>
+                            <input type="text" x-model="form.displayName" required autocomplete="name"
+                                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-brand-dark placeholder-gray-400 focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 transition-all"
+                                   placeholder="Nome do administrador">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-brand-dark mb-2">Email</label>
+                            <input type="email" x-model="form.email" required autocomplete="email"
+                                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-brand-dark placeholder-gray-400 focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 transition-all"
+                                   placeholder="admin@seuemail.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-brand-dark mb-2">Senha</label>
+                            <input type="password" x-model="form.password" required minlength="6" autocomplete="new-password"
+                                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-brand-dark placeholder-gray-400 focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 transition-all"
+                                   placeholder="Mínimo 6 caracteres">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-brand-dark mb-2">Confirmar Senha</label>
+                            <input type="password" x-model="form.confirmPassword" required minlength="6" autocomplete="new-password"
+                                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-brand-dark placeholder-gray-400 focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 transition-all"
+                                   placeholder="Repita a senha">
+                        </div>
+
+                        <button type="submit" :disabled="submitting"
+                                class="w-full py-3.5 bg-brand-primary text-white font-bold rounded-xl hover:bg-brand-maroon transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-brand-primary/20 hover:shadow-xl hover:shadow-brand-primary/30 active:scale-[0.98]">
+                            <span x-show="!submitting" class="flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                </svg>
+                                Criar Administrador
+                            </span>
+                            <span x-show="submitting" class="flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                                </svg>
+                                Criando...
+                            </span>
+                        </button>
+                    </form>
+
+                    <!-- Sucesso -->
+                    <div x-show="success" class="text-center">
+                        <a href="login.html"
+                           class="inline-block px-6 py-3 bg-brand-primary text-white font-semibold rounded-lg hover:bg-brand-maroon transition-colors">
+                            Ir para Login
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center border-t border-gray-100 pt-6">
+                    <a href="index.html"
+                       class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-brand-primary transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                        Voltar ao cardápio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setupApp() {
+            return {
+                loading: true,
+                alreadyConfigured: false,
+                submitting: false,
+                success: false,
+                successMessage: '',
+                error: null,
+                form: {
+                    displayName: '',
+                    email: '',
+                    password: '',
+                    confirmPassword: ''
+                },
+
+                async init() {
+                    await this.checkIfConfigured();
+                    this.loading = false;
+                },
+
+                async checkIfConfigured() {
+                    try {
+                        const { data, error } = await supabase.rpc('first_admin_pending');
+                        if (error) throw error;
+                        this.alreadyConfigured = data !== true;
+                    } catch (err) {
+                        console.error('Erro ao verificar configuração:', err);
+                        this.alreadyConfigured = true;
+                    }
+                },
+
+                async handleSetup() {
+                    this.error = null;
+
+                    if (this.form.password !== this.form.confirmPassword) {
+                        this.error = 'As senhas não coincidem.';
+                        return;
+                    }
+                    if (this.form.password.length < 6) {
+                        this.error = 'A senha deve ter pelo menos 6 caracteres.';
+                        return;
+                    }
+
+                    this.submitting = true;
+                    try {
+                        const { data, error } = await supabase.functions.invoke('create-user', {
+                            body: {
+                                email: this.form.email,
+                                password: this.form.password,
+                                displayName: this.form.displayName
+                            }
+                        });
+
+                        if (error) {
+                            const msg = data?.error || error.message;
+                            if (msg && msg.toLowerCase().includes('admin')) {
+                                this.alreadyConfigured = true;
+                            }
+                            this.error = msg || 'Erro ao criar administrador.';
+                            return;
+                        }
+
+                        if (data?.error) {
+                            this.error = data.error;
+                            return;
+                        }
+
+                        this.success = true;
+                        this.successMessage = 'Administrador criado com sucesso! Faça login para acessar o painel.';
+                    } catch (err) {
+                        console.error('Erro ao criar administrador:', err);
+                        this.error = 'Erro ao criar administrador. Tente novamente.';
+                    } finally {
+                        this.submitting = false;
+                    }
+                }
+            };
+        }
+    </script>
+</body>
+</html>

@@ -12,11 +12,9 @@
     <link rel="stylesheet" href="css/tailwind/output.css">
     <link rel="stylesheet" href="css/styles.css">
 
-    <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore-compat.js"></script>
-    <script src="js/firebase.js"></script>
-    <script src="js/auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase/supabase-client.js"></script>
+    <script src="js/supabase/auth.js"></script>
 
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
@@ -112,6 +110,10 @@
                     <p class="text-xs text-gray-400 mt-4">
                         Acesso restrito a administradores e operadores
                     </p>
+                    <a href="setup.html" x-show="showSetupLink"
+                       class="inline-block mt-4 text-xs text-brand-primary hover:text-brand-maroon transition-colors">
+                        Primeiro acesso? Configurar administrador
+                    </a>
                 </div>
             </div>
         </div>
@@ -125,15 +127,34 @@
                 error: null,
                 loading: true,
                 submitting: false,
+                showSetupLink: false,
 
                 init() {
-                    auth.onAuthStateChanged((user) => {
-                        if (user) {
-                            window.location.href = 'admin.html';
-                        } else {
-                            this.loading = false;
+                    authService.init();
+                    this.checkSetupAvailable();
+
+                    const check = setInterval(() => {
+                        if (!authService.state.loading) {
+                            clearInterval(check);
+                            if (authService.state.user) {
+                                window.location.href = 'admin.html';
+                            } else {
+                                this.loading = false;
+                                this.error = authService.state.error;
+                            }
                         }
-                    });
+                    }, 50);
+                },
+
+                async checkSetupAvailable() {
+                    try {
+                        const { data, error } = await supabase.rpc('first_admin_pending');
+                        if (error) throw error;
+                        this.showSetupLink = data === true;
+                    } catch (err) {
+                        console.error('Erro ao verificar disponibilidade do setup:', err);
+                        this.showSetupLink = false;
+                    }
                 },
 
                 async handleLogin() {

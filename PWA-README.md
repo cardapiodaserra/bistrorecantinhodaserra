@@ -3,11 +3,10 @@
 ## Funcionalidades Implementadas
 
 - **Progressive Web App (PWA)** totalmente funcional
-- **Service Worker** para cache e funcionalidade offline
+- **Service Worker** para cache de recursos estáticos e funcionalidade offline parcial
 - **Manifest.json** para metadados da aplicação
 - **Banner de instalação** automático
 - **Ícones** configurados para Android e iOS
-- **Firestore offline persistence** — dados do cardápio disponíveis offline via cache IndexedDB
 
 ## Como Funciona
 
@@ -52,7 +51,7 @@
 ```
 ├── manifest.json           # Configuração do PWA
 ├── sw.js                   # Service Worker (cache + network-first)
-├── js/firebase.js          # Config Firebase (com enablePersistence)
+├── js/supabase/supabase-client.js  # Cliente Supabase (backend ativo)
 └── index.html              # Meta tags PWA + registro do SW
 ```
 
@@ -60,7 +59,8 @@
 
 1. **Servidor Local**:
    ```bash
-   npm run dev
+   npm run supabase:start   # Supabase local (Docker)
+   npm run dev              # http://127.0.0.1:3000
    ```
 
 2. **Teste no Chrome DevTools**:
@@ -79,17 +79,20 @@
 O Service Worker armazena em cache (network-first):
 - Página principal (index.html)
 - Estilos (styles.css, tailwind/output.css)
-- Scripts (app.js, firebase.js, menu-service.js)
+- Scripts (app.js, supabase-client.js, menu-service.js)
 - Logo
-- CDNs (Alpine.js, Google Fonts, Firebase SDK)
+- CDNs (Alpine.js, Google Fonts, SDK Supabase)
 
-Os dados do cardápio são servidos offline via **Firestore offline persistence** (IndexedDB), substituindo o antigo `data.json` no cache do SW.
+> ⚠️ **Dados do cardápio**: ao contrário do antigo Firestore (que tinha
+> `enablePersistence()`), o Supabase **não tem cache offline nativo no Postgres**.
+> Os dados do cardápio são buscados via HTTP e **não** ficam no cache do Service
+> Worker. Sem conexão, o cardápio não atualiza até reconectar.
 
 ## Atualizações Futuras
 
 Para atualizar o cache após mudanças:
 1. Abra `sw.js`
-2. Altere `CACHE_NAME` (ex: `'bistro-recantinho-v3'`)
+2. Altere `CACHE_NAME` (ex: `'bistro-recantinho-v4'`)
 3. Deploy da atualização
 4. Service Worker limpará cache antigo automaticamente
 
@@ -99,7 +102,7 @@ Para atualizar o cache após mudanças:
 - Safari (iOS/Mac) — parcial
 - Firefox (Android/Desktop)
 - Samsung Internet
-- iOS Safari — sem service worker completo (Firestore persistence cobre parcialmente)
+- iOS Safari — sem service worker completo
 
 ## Troubleshooting
 
@@ -117,7 +120,7 @@ Para atualizar o cache após mudanças:
 - Altere o `CACHE_NAME` em `sw.js`
 - Desregistre o Service Worker: DevTools > Application > Service Workers > Unregister
 
-**Dados offline não carregam?**
-- O Firestore persistence requer pelo menos um carregamento online bem-sucedido antes
-- Verifique se `db.enablePersistence()` não está lançando erro no console
-- Navegadores em modo anônimo podem não suportar IndexedDB persistence
+**Cardápio não carrega?**
+- Confirme que o Supabase local/Cloud está acessível (http://127.0.0.1:54321 em dev)
+- Verifique a anon key em `js/supabase/supabase-client.js`
+- Em dev, nunca abra via `file://` — use `http://localhost:3000`

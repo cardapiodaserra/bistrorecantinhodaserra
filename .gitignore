@@ -1,2 +1,7 @@
 node_modules/
 .opencode/
+
+# Supabase local (CLI generated state)
+supabase/.branches/
+supabase/.temp/
+supabase/.env

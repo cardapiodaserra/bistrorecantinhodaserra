@@ -5,7 +5,11 @@
   "scripts": {
     "dev": "http-server . -p 3000 -c-1",
     "build:css": "npx @tailwindcss/cli -i ./css/tailwind/input.css -o ./css/tailwind/output.css --minify",
-    "watch:css": "npx @tailwindcss/cli -i ./css/tailwind/input.css -o ./css/tailwind/output.css --watch"
+    "watch:css": "npx @tailwindcss/cli -i ./css/tailwind/input.css -o ./css/tailwind/output.css --watch",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:reset": "supabase db reset",
+    "dev:all": "npm run supabase:start && npm run dev"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",

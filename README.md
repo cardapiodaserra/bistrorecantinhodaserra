@@ -149,7 +149,8 @@ O projeto está configurado para **GitHub Pages** em:
 https://cardapiorapido.github.io/bistrorecantinhodaserra/
 ```
 
-Veja **[DEPLOYMENT.md](DEPLOYMENT.md)** para o fluxo completo de deploy com Supabase Cloud.
+Veja **[DEPLOYMENT.md](DEPLOYMENT.md)** para o guia completo de deploy com Supabase Cloud,
+incluindo migrations, Edge Functions, config push, storage e verificação pós-deploy.
 
 ## Licença
 

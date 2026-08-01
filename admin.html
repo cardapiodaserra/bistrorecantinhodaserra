@@ -416,8 +416,15 @@
                                          class="w-full h-full object-cover">
                                 </div>
                             </template>
-                            <input type="file" accept="image/*" @change="handleImageSelect($event)"
-                                   class="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-brand-primary file:text-white hover:file:bg-brand-maroon cursor-pointer">
+                            <label class="flex flex-col items-center justify-center gap-2 w-full py-6 px-4 border-2 border-dashed border-[#8B3A3A]/40 rounded-lg bg-[#E8DCC8]/40 text-center cursor-pointer transition-colors hover:border-[#8B3A3A] hover:bg-[#E8DCC8]">
+                                <input type="file" accept="image/*" @change="handleImageSelect($event)"
+                                       class="sr-only">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
+                                </svg>
+                                <span class="text-sm font-semibold text-brand-primary">Selecionar imagem</span>
+                                <span class="text-xs text-gray-500">JPG, PNG, WebP ou GIF · máx. 5MB</span>
+                            </label>
                             <template x-if="itemForm.uploading">
                                 <div>
                                     <div class="w-full bg-gray-200 rounded-full h-2.5">

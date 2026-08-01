@@ -38,6 +38,7 @@ Os serviços expõem a **mesma API pública** (`authService`, `menuService`, `st
 ### Supabase local (Docker)
 
 - CLI: `supabase` (v2.111.0+). Stack gerenciado por `supabase start` / `supabase stop`.
+- Não há `docker-compose.yml`/`Dockerfile` no repo — o CLI `supabase start` gera e gerencia o compose internamente a partir das imagens oficiais (Docker é pré-requisito).
 - **Studio**: http://127.0.0.1:54323 — inspecionar tabelas, profiles, buckets.
 - **API REST**: http://127.0.0.1:54321/rest/v1
 - **Edge Functions**: http://127.0.0.1:54321/functions/v1 (`create-user`, `delete-user`)

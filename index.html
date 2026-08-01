@@ -29,13 +29,12 @@
     
     <link rel="stylesheet" href="css/tailwind/output.css">
     
-    <!-- Firebase SDK (compat mode) -->
-    <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore-compat.js"></script>
+    <!-- Supabase SDK (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- Firebase config -->
-    <script src="js/firebase.js"></script>
+    <!-- Supabase client + services -->
+    <script src="js/supabase/supabase-client.js"></script>
+    <script src="js/supabase/menu-service.js"></script>
 
     <!-- Alpine.js local (defer) -->
     <script defer src="js/alpinejs/cdn.min.js"></script>
@@ -875,7 +874,6 @@
         </div>
     </div>
 
-    <script src="js/menu-service.js"></script>
     <script src="js/app.js"></script>
 
     <!-- Registro do Service Worker -->
